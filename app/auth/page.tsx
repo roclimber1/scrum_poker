@@ -15,10 +15,17 @@ import type { RootState } from '@/app/Redux/store'
 export function CreateRoomBlock() {
 
     return <>
-        <input
-            className="bg-sky-900 hover:bg-sky-700 rounded-md text-base p-3 my-3"
-            type="text"
-        />
+        <div className="text-gray-500 pt-3">Enter your poker room name:</div>
+        <div className="flex flex-row gap-3">
+            <input
+                className="bg-sky-900 hover:bg-sky-700 rounded-md text-base p-3 my-3"
+                type="text"
+            />
+
+            <button className="bg-orange-600 hover:bg-orange-400 rounded-md text-base p-3 my-3">
+                Create 🥑
+            </button>
+        </div>
     </>
 }
 

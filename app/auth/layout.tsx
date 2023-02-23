@@ -10,7 +10,7 @@ import Provider from '@/app/Redux/provider'
 
 
 import { useSelector, useDispatch } from 'react-redux'
-import { setAuthorized } from '@/app/Redux/features/auth'
+import { setAuthorized, setUser } from '@/app/Redux/features/auth'
 
 
 
@@ -19,6 +19,7 @@ import type { FirebaseOptions, FirebaseApp } from 'firebase/app'
 
 import type { ReactNode } from 'react'
 import type { RootState } from '@/app/Redux/store'
+import Loader from '../Components/Loader'
 
 
 
@@ -47,42 +48,35 @@ interface LayoutProps {
 
 export function AuthBlock() {
 
-    // TODO: check whether user is authorized
-
-    const { authorized } = useSelector((state: RootState) => state.auth)
+    const { authorized, user } = useSelector((state: RootState) => state.auth)
     const dispatch = useDispatch()
 
 
-    const [user, setUser] = useState<User | null>(null)
-
     const [error, setError] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false)
 
 
-    const firebaseApp = useMemo<FirebaseApp>(() => {
+    const authHandler = useMemo<FirebaseAuth>(() => {
 
-        console.debug('user', user)
+        const firebaseApp = initFirebaseApp(firebaseConfig)
 
-        return initFirebaseApp(firebaseConfig)
+        return FirebaseAuth.getInstance(firebaseApp)
     }, [])
 
 
     const handleSignInClick = () => {
 
-        const authHandler: FirebaseAuth = FirebaseAuth.getInstance(firebaseApp)
-
         authHandler.signIn()
             .then(user => {
 
-                console.debug('user', user)
-
-                setUser(user)
+                dispatch(setUser(user))
                 dispatch(setAuthorized(true))
 
                 setError('')
             })
             .catch(error => {
 
-                setUser(null)
+                dispatch(setUser(null))
                 dispatch(setAuthorized(false))
 
                 setError(error)
@@ -91,8 +85,6 @@ export function AuthBlock() {
 
 
     const handleSignOutClick = () => {
-
-        const authHandler: FirebaseAuth = FirebaseAuth.getInstance(firebaseApp)
 
         authHandler.signOut()
             ?.then(() => {
@@ -109,6 +101,28 @@ export function AuthBlock() {
     }
 
 
+    React.useEffect(() => {
+
+        setLoading(true)
+
+        authHandler && authHandler.setAuthStateWatcher()?.then(
+            ({ state, user }) => {
+
+                state && dispatch(setAuthorized(true))
+                state && setUser(user)
+            })
+            .catch(({ state, user }) => {
+
+                //
+            })
+            .finally(() => {
+
+                setLoading(false)
+            })
+
+    }, [])
+
+
     return (
         <React.Fragment>
 
@@ -116,10 +130,17 @@ export function AuthBlock() {
 
             {!!error && <h2>{`Something went wrong: ${error}`}</h2>}
 
-            {!authorized && <button onClick={handleSignInClick} className="bg-sky-500 hover:bg-sky-700 rounded-md text-base p-3 my-3">Sigh In with Google 🚀</button>}
+
+            {loading && <Loader />}
 
 
-            {authorized && <button onClick={handleSignOutClick} className="bg-green-900 hover:bg-green-700 rounded-md text-base p-3 my-3">Sigh Out 🦖</button>}
+            {!loading && <>
+
+                {!authorized && <button onClick={handleSignInClick} className="bg-sky-500 hover:bg-sky-700 rounded-md text-base p-3 my-3">Sigh In with Google 🚀</button>}
+
+
+                {authorized && <button onClick={handleSignOutClick} className="bg-green-900 hover:bg-green-700 rounded-md text-base p-3 my-3">Sigh Out 🦖</button>}
+            </>}
         </React.Fragment>
     )
 }

@@ -1,5 +1,5 @@
 
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, getAdditionalUserInfo } from 'firebase/auth'
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, getAdditionalUserInfo, onAuthStateChanged } from 'firebase/auth'
 
 import { firebaseApp } from './firebase'
 
@@ -7,6 +7,14 @@ import { firebaseApp } from './firebase'
 
 import type { FirebaseApp } from 'firebase/app'
 import type { Auth, UserCredential, User, OAuthCredential } from 'firebase/auth'
+
+
+
+
+interface AuthData {
+    state: boolean,
+    user: User | null
+}
 
 
 
@@ -45,6 +53,43 @@ export class FirebaseAuth {
         }
 
         return FirebaseAuth.instance
+    }
+
+
+    public checkAuthState(): AuthData {
+
+        let authState = false
+        let user = null
+
+        if (this.auth) {
+
+            user = this.auth.currentUser
+            authState = Boolean(user)
+        }
+
+        return { user, state: authState }
+    }
+
+
+    public setAuthStateWatcher(): Promise<AuthData> | null {
+
+        const promise = new Promise<AuthData>((resolve, reject) => {
+
+            this.auth && onAuthStateChanged(this.auth as Auth, (user) => {
+
+                if (user) {
+
+                    resolve({ user, state: true })
+
+                } else {
+
+                    reject({ user: null, state: false })
+                }
+            })
+        })
+
+
+        return promise
     }
 
 

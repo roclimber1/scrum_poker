@@ -22,9 +22,10 @@ export default function RootLayout({
         <html lang="en">
             <head />
 
-            <body className={`${montserrat.className}`}>
+            <body className={`${montserrat.className} flex flex-col h-screen justify-center`}>
 
-                <nav>
+                <nav className="flex justify-center">
+
                     <ul className="flex-row flex p-2 m-2 gap-3">
                         <li className="hover:text-slate-400">
                             <a href="/">Home</a>
@@ -38,9 +39,9 @@ export default function RootLayout({
                     </ul>
                 </nav>
 
-                <>
+                <div className="flex justify-center h-2/3">
                     {children}
-                </>
+                </div>
 
             </body>
         </html>

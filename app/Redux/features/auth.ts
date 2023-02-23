@@ -5,15 +5,18 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 import type { PayloadAction } from '@reduxjs/toolkit'
+import type { User } from 'firebase/auth'
 
 
 
 export interface AuthState {
-    authorized: boolean
+    authorized: boolean,
+    user: User | null
 }
 
 const initialState: AuthState = {
-    authorized: false
+    authorized: false,
+    user: null
 }
 
 export const counterSlice = createSlice({
@@ -25,11 +28,16 @@ export const counterSlice = createSlice({
         setAuthorized: (state, action: PayloadAction<boolean>) => {
 
             state.authorized = action.payload
+        },
+
+        setUser: (state, action: PayloadAction<User | null>) => {
+
+            state.user = action.payload
         }
     }
 })
 
 
-export const { setAuthorized } = counterSlice.actions
+export const { setAuthorized, setUser } = counterSlice.actions
 
 export default counterSlice
