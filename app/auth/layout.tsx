@@ -12,6 +12,11 @@ import Provider from '@/app/Redux/provider'
 import { useSelector, useDispatch } from 'react-redux'
 import { setAuthorized, setUser } from '@/app/Redux/features/auth'
 
+import { FireApp } from '@/app/utils/app'
+
+
+import Loader from '@/app/Components/Loader'
+
 
 
 import type { User } from 'firebase/auth'
@@ -19,7 +24,6 @@ import type { FirebaseOptions, FirebaseApp } from 'firebase/app'
 
 import type { ReactNode } from 'react'
 import type { RootState } from '@/app/Redux/store'
-import Loader from '../Components/Loader'
 
 
 
@@ -56,17 +60,17 @@ export function AuthBlock() {
     const [loading, setLoading] = useState<boolean>(false)
 
 
-    const authHandler = useMemo<FirebaseAuth>(() => {
+    const authHandler = useMemo<FirebaseAuth | null>(() => {
 
-        const firebaseApp = initFirebaseApp(firebaseConfig)
+        const fireApp: FireApp = FireApp.getInstance(firebaseConfig)
 
-        return FirebaseAuth.getInstance(firebaseApp)
+        return fireApp.app ? FirebaseAuth.getInstance(fireApp.app) : null
     }, [])
 
 
     const handleSignInClick = () => {
 
-        authHandler.signIn()
+        authHandler && authHandler.signIn()
             .then(user => {
 
                 dispatch(setUser(user))
@@ -86,7 +90,7 @@ export function AuthBlock() {
 
     const handleSignOutClick = () => {
 
-        authHandler.signOut()
+        authHandler && authHandler.signOut()
             ?.then(() => {
 
                 setUser(null)
