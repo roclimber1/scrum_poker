@@ -6,21 +6,21 @@ async function getNote(noteId: string) {
         {
             next: { revalidate: 10 }
         }
-    );
+    )
 
-    const data = await res.json();
+    const data = await res.json()
 
 
-    return data;
+    return data
 }
 
 
 
 export default async function NotePage({ params }: any) {
 
-    const note = await getNote(params?.id);
+    const note = await getNote(params?.id)
 
-    const { id, title, content, created } = note || {};
+    const { id, title, content, created } = note || {}
 
 
     return (
