@@ -2,41 +2,28 @@
 
 
 import React, { useMemo, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import { FirebaseAuth } from '@/app/utils/auth'
-import { initFirebaseApp } from '@/app/utils/firebase'
+
 
 import Provider from '@/app/Redux/provider'
-
-
-import { useSelector, useDispatch } from 'react-redux'
 import { setAuthorized, setUser } from '@/app/Redux/features/auth'
 
-import { FireApp } from '@/app/utils/app'
-
+import { useFireAppInstance } from '@/app/Hooks/useFireAppInstance'
 
 import Loader from '@/app/Components/Loader'
 
 
+import { ScrumPokerUser } from '@/app/utils/user'
 
-import type { User } from 'firebase/auth'
-import type { FirebaseOptions, FirebaseApp } from 'firebase/app'
+
+
 
 import type { ReactNode } from 'react'
 import type { RootState } from '@/app/Redux/store'
 
 
-
-const firebaseConfig: FirebaseOptions = {
-    apiKey: process.env.NEXT_PUBLIC_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
-    projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
-    storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
-    messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
-    appId: process.env.NEXT_PUBLIC_APP_ID,
-    measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
-    databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL
-}
 
 
 
@@ -60,11 +47,11 @@ export function AuthBlock() {
     const [loading, setLoading] = useState<boolean>(false)
 
 
+    const { fireApp } = useFireAppInstance()
+
     const authHandler = useMemo<FirebaseAuth | null>(() => {
 
-        const fireApp: FireApp = FireApp.getInstance(firebaseConfig)
-
-        return fireApp.app ? FirebaseAuth.getInstance(fireApp.app) : null
+        return fireApp?.app ? FirebaseAuth.getInstance(fireApp.app) : null
     }, [])
 
 
@@ -73,7 +60,7 @@ export function AuthBlock() {
         authHandler && authHandler.signIn()
             .then(user => {
 
-                dispatch(setUser(user))
+                dispatch(setUser(new ScrumPokerUser(user)))
                 dispatch(setAuthorized(true))
 
                 setError('')
@@ -93,7 +80,7 @@ export function AuthBlock() {
         authHandler && authHandler.signOut()
             ?.then(() => {
 
-                setUser(null)
+                dispatch(setUser(null))
                 dispatch(setAuthorized(false))
 
                 setError('')
@@ -113,7 +100,7 @@ export function AuthBlock() {
             ({ state, user }) => {
 
                 state && dispatch(setAuthorized(true))
-                state && setUser(user)
+                state && dispatch(setUser(new ScrumPokerUser(user)))
             })
             .catch(({ state, user }) => {
 
