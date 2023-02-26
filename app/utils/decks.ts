@@ -34,8 +34,8 @@ export class Decks extends Documents {
 
         const decks = await this.getDocumentsList()
 
-        const deck = decks?.empty ? null : (decks?.docs[0] || null)
+        const deck = decks?.length ? decks[0] : null
 
-        return deck
+        return deck || null
     }
 }

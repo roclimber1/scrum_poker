@@ -2,14 +2,16 @@
 'use client'
 
 
-import { useCallback, useMemo, useRef, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
+
+import Link from 'next/link'
 
 import { useRouter } from 'next/navigation'
 
 
 import { FireStore } from '@/app/utils/firestore'
-import { Rooms } from '@/app/utils/rooms'
+import { Room, Rooms } from '@/app/utils/rooms'
 
 
 import { useFireAppInstance } from '@/app/Hooks/useFireAppInstance'
@@ -21,19 +23,52 @@ import Loader from '@/app/Components/Loader'
 
 
 import type { RootState } from '@/app/Redux/store'
-import type { ScrumPokerUser } from '@/app/utils/user'
+import type { DocumentData } from 'firebase/firestore'
 
 
 
+/**
+ * Returns link to the room
+ * @param id - room's id
+ * @returns
+ */
+function getRoomLink(id: string): string {
 
-interface CreateRoomBlockProps {
-    user: ScrumPokerUser | null
+    return `/room/${id}`
 }
 
 
-export function CreateRoomBlock(props: CreateRoomBlockProps) {
 
-    const { user } = props
+interface RoomProps {
+    room: Room
+}
+
+
+
+export function RoomItem(props: RoomProps) {
+
+    const { room } = props
+    const { name, id } = room
+
+
+    return (<Link href={getRoomLink(id as string)}>
+
+        <div className="bg-yellow-600 hover:bg-yellow-400 rounded-md text-base p-3 my-3">
+
+            <h1>{name}</h1>
+
+        </div>
+    </Link>)
+}
+
+
+
+
+
+
+export function CreateRoomBlock() {
+
+    const { user } = useSelector((state: RootState) => state.auth)
 
 
     const { fireApp } = useFireAppInstance()
@@ -43,6 +78,8 @@ export function CreateRoomBlock(props: CreateRoomBlockProps) {
     const [error, setError] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(false)
 
+    const [rooms, setRooms] = useState<Array<DocumentData>>([])
+
 
     const router = useRouter()
 
@@ -51,12 +88,14 @@ export function CreateRoomBlock(props: CreateRoomBlockProps) {
 
         const fireStoreInstance = fireApp?.app ? FireStore.getInstance(fireApp?.app) : null
 
-        return fireStoreInstance?.firestore ? new Rooms(fireStoreInstance?.firestore) : null
+        const roomsHelper = fireStoreInstance?.firestore ? new Rooms(fireStoreInstance?.firestore) : null
+
+        return roomsHelper
     } ,[])
 
 
 
-    const handleCreateRoomClick = useCallback(() => {
+    const handleCreateRoomClick = () => {
 
         const { value } = roomNameRef.current || {}
 
@@ -75,7 +114,7 @@ export function CreateRoomBlock(props: CreateRoomBlockProps) {
 
                     if (docId) {
 
-                        router.push(`/room/${docId}`)
+                        router.push(getRoomLink(docId))
                     } else {
 
                         setError('Something went wrong. Your room hadn\'t been created')
@@ -83,32 +122,78 @@ export function CreateRoomBlock(props: CreateRoomBlockProps) {
                 })
                 .finally(() => setLoading(false))
         }
-    }, [user])
+    }
 
 
 
-    return <>
-        <div className="text-gray-500 pt-3">Enter your poker room name:</div>
+    useEffect(() => {
 
-        {Boolean(error) && <div className="text-red-400 pt-3">{error}</div>}
+        if (user) {
 
-        {loading && <Loader />}
+            const { uid: userId } = user
 
-        <div className="flex flex-row gap-3">
-            <input
-                className="bg-sky-900 hover:bg-sky-700 rounded-md text-base p-3 my-3"
-                type="text"
-                ref={roomNameRef}
-            />
+            setLoading(true)
 
-            <button
-                className="bg-orange-600 hover:bg-orange-400 rounded-md text-base p-3 my-3"
-                onClick={handleCreateRoomClick}
-            >
-                Create 🥑
-            </button>
-        </div>
-    </>
+            roomsHelper && roomsHelper.getRoomsByUserId(userId as string)
+                .then((rooms) => {
+
+                    setRooms(rooms)
+                })
+                .finally(() => setLoading(false))
+        }
+
+    }, [])
+
+
+
+
+    return (<>
+
+        {error ? <div className="text-red-400 pt-3">{error}</div> : null}
+
+        {loading ? <Loader /> : null}
+
+
+        {!loading ? (<>
+
+            {!rooms?.length ? (<>
+
+                <h1>Here you could create your poker room ➕</h1>
+
+                <div className="text-gray-500 pt-3">Enter your poker room name:</div>
+
+
+                <div className="flex flex-row gap-3">
+
+                    <input
+                        className="bg-sky-900 hover:bg-sky-700 rounded-md text-base p-3 my-3"
+                        type="text"
+                        ref={roomNameRef}
+                    />
+
+                    <button
+                        className="bg-orange-600 hover:bg-orange-400 rounded-md text-base p-3 my-3"
+                        onClick={handleCreateRoomClick}
+                    >
+                        Create 🥑
+                    </button>
+                </div>
+            </>) : null}
+
+
+            {rooms?.length ? (<>
+
+                <h1>You could use a room that was created earlier:</h1>
+
+                {rooms.map((room: DocumentData) => {
+
+                    return <RoomItem key={room?.id} room={room as Room} />
+                })}
+            </>) : null}
+
+        </>) : null}
+
+    </>)
 }
 
 
@@ -116,17 +201,15 @@ export function CreateRoomBlock(props: CreateRoomBlockProps) {
 
 export default function Home() {
 
-    const { authorized, user } = useSelector((state: RootState) => state.auth)
+    const { authorized } = useSelector((state: RootState) => state.auth)
 
 
     return (
         <main className="px-4">
 
-            <h1>Here you could create your poker room ➕</h1>
-
             {!authorized && <h2>To continue you need to sign in 🚪</h2>}
 
-            {authorized && <CreateRoomBlock user={user} />}
+            {authorized ? <CreateRoomBlock /> : null}
         </main>
     )
 }
