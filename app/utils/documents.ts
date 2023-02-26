@@ -4,7 +4,7 @@ import { collection, doc, getDoc, addDoc, getDocs, query, where } from 'firebase
 
 
 
-import type { Firestore, CollectionReference, DocumentData, QuerySnapshot } from 'firebase/firestore'
+import type { Firestore, CollectionReference, DocumentData, QuerySnapshot, Query } from 'firebase/firestore'
 
 
 
@@ -12,14 +12,15 @@ import type { Firestore, CollectionReference, DocumentData, QuerySnapshot } from
 
 export class Documents {
 
-    private decksRef: CollectionReference<DocumentData>
+    public docsRef: CollectionReference<DocumentData>
+
 
     constructor(
         public firestore: Firestore,
         private collectionName: string
     ) {
 
-        this.decksRef = collection(this.firestore, this.collectionName)
+        this.docsRef = collection(this.firestore, this.collectionName)
     }
 
 
@@ -39,11 +40,35 @@ export class Documents {
     }
 
 
-    public async getDocumentsList(): Promise<QuerySnapshot<DocumentData> | null> {
+    private convertSnapshotToDocumentsList(querySnapshot: QuerySnapshot<DocumentData>): Array<DocumentData> {
 
-        const querySnapshot = await getDocs(this.decksRef)
+        const documents: Array<DocumentData> = []
 
-        return querySnapshot
+        querySnapshot?.forEach((doc) => {
+
+            documents.push({
+                ...doc.data(),
+                id: doc.id
+            })
+        })
+
+        return documents
+    }
+
+
+    public async getDocumentsByQuery(query: Query) {
+
+        const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(query)
+
+        return this.convertSnapshotToDocumentsList(querySnapshot)
+    }
+
+
+    public async getDocumentsList(): Promise<Array<DocumentData> | null> {
+
+        const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(this.docsRef)
+
+        return this.convertSnapshotToDocumentsList(querySnapshot)
     }
 
 }

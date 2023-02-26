@@ -60,7 +60,9 @@ export function AuthBlock() {
         authHandler && authHandler.signIn()
             .then(user => {
 
-                dispatch(setUser(new ScrumPokerUser(user)))
+                const newUser = new ScrumPokerUser(user)
+
+                dispatch(setUser(newUser.serialize()))
                 dispatch(setAuthorized(true))
 
                 setError('')
@@ -99,8 +101,10 @@ export function AuthBlock() {
         authHandler && authHandler.setAuthStateWatcher()?.then(
             ({ state, user }) => {
 
+                const newUser = new ScrumPokerUser(user)
+
                 state && dispatch(setAuthorized(true))
-                state && dispatch(setUser(new ScrumPokerUser(user)))
+                state && dispatch(setUser(newUser.serialize()))
             })
             .catch(({ state, user }) => {
 
@@ -143,11 +147,13 @@ export default function Layout({ children }: LayoutProps) {
         <section>
 
             <Provider>
-                {children}
 
                 <div className="px-4">
                     <AuthBlock />
                 </div>
+
+                {children}
+
             </Provider>
         </section>
     )

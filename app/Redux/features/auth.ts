@@ -5,13 +5,13 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { ScrumPokerUser } from '@/app/utils/user'
+import type { IScrumPokerUser } from '@/app/utils/user'
 
 
 
 export interface AuthState {
     authorized: boolean,
-    user: ScrumPokerUser | null
+    user: IScrumPokerUser | null
 }
 
 const initialState: AuthState = {
@@ -30,7 +30,7 @@ export const counterSlice = createSlice({
             state.authorized = action.payload
         },
 
-        setUser: (state, action: PayloadAction<ScrumPokerUser | null>) => {
+        setUser: (state, action: PayloadAction<IScrumPokerUser | null>) => {
 
             state.user = action.payload
         }
