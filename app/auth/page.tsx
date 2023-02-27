@@ -25,6 +25,8 @@ import Loader from '@/app/Components/Loader'
 import type { RootState } from '@/app/Redux/store'
 import type { DocumentData } from 'firebase/firestore'
 
+import type { MouseEventHandler, MouseEvent } from 'react'
+
 
 
 /**
@@ -40,6 +42,7 @@ function getRoomLink(id: string): string {
 
 
 interface RoomProps {
+    handleRemove: MouseEventHandler<HTMLDivElement>,
     room: Room
 }
 
@@ -47,15 +50,32 @@ interface RoomProps {
 
 export function RoomItem(props: RoomProps) {
 
-    const { room } = props
+    const { room, handleRemove } = props
     const { name, id } = room
+
+
+    const handleClickRemove: MouseEventHandler<HTMLDivElement> = (event) => {
+
+        event.stopPropagation()
+        event.preventDefault()
+
+        handleRemove(event)
+    }
 
 
     return (<Link href={getRoomLink(id as string)}>
 
-        <div className="bg-yellow-600 hover:bg-yellow-400 rounded-md text-base p-3 my-3">
+        <div className="bg-yellow-600 hover:bg-yellow-400 rounded-md text-base p-3 my-3 flex flex-row">
 
-            <h1>{name}</h1>
+            <div className="flex-grow"><h1>{name}</h1></div>
+
+            <div
+                title="Remove this room"
+                className="hover:bg-yellow-800 rounded-md"
+                onClick={handleClickRemove}
+            >
+                ☠️
+            </div>
 
         </div>
     </Link>)
@@ -125,6 +145,30 @@ export function CreateRoomBlock() {
     }
 
 
+    const handleRemove = (id: string) => (event: MouseEvent<HTMLDivElement>) => {
+
+        setError('')
+        setLoading(true)
+
+        roomsHelper && roomsHelper.deleteDocumentById(id)
+            .then(
+                () => {
+                    setRooms((previous: Array<DocumentData>) => {
+
+                        return previous.filter(item => item?.id != id)
+                    })
+                }
+            )
+            .catch(
+                (error) => {
+
+                    setError(error)
+                }
+            )
+            .finally(() => setLoading(false))
+    }
+
+
 
     useEffect(() => {
 
@@ -187,7 +231,13 @@ export function CreateRoomBlock() {
 
                 {rooms.map((room: DocumentData) => {
 
-                    return <RoomItem key={room?.id} room={room as Room} />
+                    const { id: roomId } = room || {}
+
+                    return <RoomItem
+                        key={roomId}
+                        room={room as Room}
+                        handleRemove={handleRemove(roomId)}
+                    />
                 })}
             </>) : null}
 

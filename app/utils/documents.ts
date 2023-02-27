@@ -1,6 +1,6 @@
 
 
-import { collection, doc, getDoc, addDoc, getDocs, query, where } from 'firebase/firestore'
+import { collection, doc, getDoc, addDoc, getDocs, query, where, deleteDoc } from 'firebase/firestore'
 
 
 
@@ -37,6 +37,14 @@ export class Documents {
         }
 
         return data
+    }
+
+
+    public async deleteDocumentById(id: string): Promise<void> {
+
+        const docRef = doc(this.firestore, this.collectionName, id)
+
+        await deleteDoc(docRef)
     }
 
 
