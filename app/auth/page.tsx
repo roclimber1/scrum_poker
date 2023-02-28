@@ -18,6 +18,7 @@ import { useFireAppInstance } from '@/app/Hooks/useFireAppInstance'
 
 
 import Loader from '@/app/Components/Loader'
+import DataInputBlock from '@/app/Components/DataInputBlock'
 
 
 
@@ -200,29 +201,13 @@ export function CreateRoomBlock() {
 
         {!loading ? (<>
 
-            {!rooms?.length ? (<>
-
-                <h1>Here you could create your poker room ➕</h1>
-
-                <div className="text-gray-500 pt-3">Enter your poker room name:</div>
-
-
-                <div className="flex flex-row gap-3">
-
-                    <input
-                        className="bg-sky-900 hover:bg-sky-700 rounded-md text-base p-3 my-3"
-                        type="text"
-                        ref={roomNameRef}
-                    />
-
-                    <button
-                        className="bg-orange-600 hover:bg-orange-400 rounded-md text-base p-3 my-3"
-                        onClick={handleCreateRoomClick}
-                    >
-                        Create 🥑
-                    </button>
-                </div>
-            </>) : null}
+            {!rooms?.length ? (<DataInputBlock
+                buttonTitle={'Create 🥑'}
+                handleButtonClick={handleCreateRoomClick}
+                header={'Here you could create your poker room ➕'}
+                ref={roomNameRef}
+                title={'Enter your poker room name:'}
+            />) : null}
 
 
             {rooms?.length ? (<>
