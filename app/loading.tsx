@@ -1,5 +1,5 @@
 
-import Loader from './Components/Loader'
+import Loader from '@/components/Loader'
 
 import { Montserrat } from '@next/font/google'
 

@@ -4,24 +4,24 @@
 import React, { useMemo, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { FirebaseAuth } from '@/app/utils/auth'
+import { FirebaseAuth } from '@/utils/auth'
 
 
-import Provider from '@/app/Redux/provider'
-import { setAuthorized, setUser } from '@/app/Redux/features/auth'
+import Provider from '@/redux/provider'
+import { setAuthorized, setUser } from '@/redux/features/auth'
 
-import { useFireAppInstance } from '@/app/Hooks/useFireAppInstance'
+import { useFireAppInstance } from '@/hooks/useFireAppInstance'
 
-import Loader from '@/app/Components/Loader'
+import Loader from '@/components/Loader'
 
 
-import { ScrumPokerUser } from '@/app/utils/user'
+import { ScrumPokerUser } from '@/utils/user'
 
 
 
 
 import type { ReactNode } from 'react'
-import type { RootState } from '@/app/Redux/store'
+import type { RootState } from '@/redux/store'
 
 
 

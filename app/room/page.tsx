@@ -3,7 +3,7 @@
 
 
 
-import DataInputBlock from '@/app/Components/DataInputBlock'
+import DataInputBlock from '@/components/DataInputBlock'
 
 
 

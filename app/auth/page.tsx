@@ -10,20 +10,20 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 
-import { FireStore } from '@/app/utils/firestore'
-import { Room, Rooms } from '@/app/utils/rooms'
+import { FireStore } from '@/utils/firestore'
+import { Room, Rooms } from '@/utils/rooms'
 
 
-import { useFireAppInstance } from '@/app/Hooks/useFireAppInstance'
+import { useFireAppInstance } from '@/hooks/useFireAppInstance'
 
 
-import Loader from '@/app/Components/Loader'
-import DataInputBlock from '@/app/Components/DataInputBlock'
+import Loader from '@/components/Loader'
+import DataInputBlock from '@/components/DataInputBlock'
 
 
 
 
-import type { RootState } from '@/app/Redux/store'
+import type { RootState } from '@/redux/store'
 import type { DocumentData } from 'firebase/firestore'
 
 import type { MouseEventHandler, MouseEvent } from 'react'

@@ -2,7 +2,7 @@
 
 
 import { configureStore } from '@reduxjs/toolkit'
-import authSlice from '@/app/Redux/features/auth'
+import authSlice from '@/redux/features/auth'
 
 
 export const store = configureStore({
