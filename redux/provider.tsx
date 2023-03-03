@@ -1,6 +1,6 @@
 'use client'
 
-import { store } from '@/app/Redux/store'
+import { store } from '@/redux/store'
 import { Provider as BaseProvider } from 'react-redux'
 
 

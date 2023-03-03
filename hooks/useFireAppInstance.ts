@@ -1,7 +1,7 @@
 
 import { useMemo } from 'react'
 
-import { FireApp } from '@/app/utils/app'
+import { FireApp } from '@/utils/app'
 
 
 

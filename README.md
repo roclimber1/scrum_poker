@@ -11,7 +11,3 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-
-# db server
-./pocketbase serve
-```

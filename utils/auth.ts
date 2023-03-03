@@ -1,8 +1,6 @@
 
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, getAdditionalUserInfo, onAuthStateChanged } from 'firebase/auth'
 
-import { firebaseApp } from './firebase'
-
 
 
 import type { FirebaseApp } from 'firebase/app'

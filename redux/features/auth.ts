@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { IScrumPokerUser } from '@/app/utils/user'
+import type { IScrumPokerUser } from '@/utils/user'
 
 
 
