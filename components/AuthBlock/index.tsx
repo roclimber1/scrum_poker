@@ -1,13 +1,14 @@
+
 'use client'
 
 
-import React, { useMemo, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { FirebaseAuth } from '@/utils/auth'
+import { FirebaseAuth } from '@/utils/FirebaseAuth'
 
 
-import Provider from '@/redux/provider'
+
 import { setAuthorized, setUser } from '@/redux/features/auth'
 
 import { useFireAppInstance } from '@/hooks/useFireAppInstance'
@@ -15,29 +16,19 @@ import { useFireAppInstance } from '@/hooks/useFireAppInstance'
 import Loader from '@/components/Loader'
 
 
-import { ScrumPokerUser } from '@/utils/user'
+import { ScrumPokerUser } from '@/utils/ScrumPokerUser'
 
 
 
 
-import type { ReactNode } from 'react'
+
 import type { RootState } from '@/redux/store'
 
 
 
 
 
-
-
-
-interface LayoutProps {
-    children: ReactNode
-}
-
-
-
-
-export function AuthBlock() {
+function AuthBlock() {
 
     const { authorized, user } = useSelector((state: RootState) => state.auth)
     const dispatch = useDispatch()
@@ -94,7 +85,7 @@ export function AuthBlock() {
     }
 
 
-    React.useEffect(() => {
+    useEffect(() => {
 
         setLoading(true)
 
@@ -119,9 +110,9 @@ export function AuthBlock() {
 
 
     return (
-        <React.Fragment>
+        <div className="flex flex-row items-center">
 
-            {user && <h2>Hi there, <span className="text-yellow-600">{user?.displayName}</span>!</h2>}
+            {user && <h2 className="m-2 p-2">Hi there, <span className="text-yellow-600">{user?.displayName}</span>!</h2>}
 
             {!!error && <h2>{`Something went wrong: ${error}`}</h2>}
 
@@ -136,25 +127,10 @@ export function AuthBlock() {
 
                 {authorized && <button onClick={handleSignOutClick} className="bg-green-900 hover:bg-green-700 rounded-md text-base p-3 my-3">Sigh Out 🦖</button>}
             </>}
-        </React.Fragment>
+        </div>
     )
 }
 
 
-export default function Layout({ children }: LayoutProps) {
 
-    return (
-        <section>
-
-            <Provider>
-
-                <div className="px-4">
-                    <AuthBlock />
-                </div>
-
-                {children}
-
-            </Provider>
-        </section>
-    )
-}
+export default AuthBlock

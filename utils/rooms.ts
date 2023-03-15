@@ -2,15 +2,15 @@
 
 import { collection, addDoc, Query } from 'firebase/firestore'
 
-import { Documents } from '@/utils/documents'
-import { Decks } from '@/utils/decks'
+import { Documents } from '@/utils/Documents'
+import { Decks } from '@/utils/Decks'
 
-import { QueryBuilder } from '@/utils/query_builder'
+import { QueryBuilder } from '@/utils/QueryBuilder'
 
 
 
 import type { Firestore, DocumentData } from 'firebase/firestore'
-import type { IScrumPokerUser } from '@/utils/user'
+import type { IScrumPokerUser } from '@/utils/ScrumPokerUser'
 
 
 
@@ -40,6 +40,12 @@ export class Rooms extends Documents {
         super(firestore, ROOMS)
 
         this.decksHelper = new Decks(firestore)
+    }
+
+
+    public static getRoomLink(id: string): string {
+
+        return `/room/${id}`
     }
 
 

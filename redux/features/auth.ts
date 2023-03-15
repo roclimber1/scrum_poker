@@ -5,18 +5,22 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { IScrumPokerUser } from '@/utils/user'
+import type { IScrumPokerUser } from '@/utils/ScrumPokerUser'
+
+import type { RoomData } from '@/utils/WebSocketIoClient'
 
 
 
 export interface AuthState {
     authorized: boolean,
+    roomData: RoomData | null,
     user: IScrumPokerUser | null
 }
 
 const initialState: AuthState = {
     authorized: false,
-    user: null
+    user: null,
+    roomData: null
 }
 
 export const counterSlice = createSlice({
@@ -33,11 +37,16 @@ export const counterSlice = createSlice({
         setUser: (state, action: PayloadAction<IScrumPokerUser | null>) => {
 
             state.user = action.payload
+        },
+
+        setRoomData: (state, action: PayloadAction<RoomData | null>) => {
+
+            state.roomData = action.payload
         }
     }
 })
 
 
-export const { setAuthorized, setUser } = counterSlice.actions
+export const { setAuthorized, setUser, setRoomData } = counterSlice.actions
 
 export default counterSlice

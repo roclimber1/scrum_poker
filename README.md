@@ -8,6 +8,8 @@ First, run the development server:
 ```bash
 npm run dev
 # or
+npm run dev-turbo
+# or
 yarn dev
 # or
 pnpm dev
