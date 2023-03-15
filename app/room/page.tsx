@@ -4,6 +4,9 @@
 
 
 import DataInputBlock from '@/components/DataInputBlock'
+import { useRouter } from 'next/navigation'
+
+import { Rooms } from '@/utils/Rooms'
 
 
 
@@ -16,6 +19,8 @@ export default function Room() {
 
     const inputRef = useRef<HTMLInputElement>(null)
 
+    const router = useRouter()
+
 
     const handleButtonClick: MouseEventHandler<HTMLButtonElement> = (event) => {
 
@@ -27,6 +32,10 @@ export default function Room() {
         if (!value) {
 
             console.error('You should enter room\'s ID')
+
+        } else {
+
+            router.push(Rooms.getRoomLink(value))
         }
     }
 

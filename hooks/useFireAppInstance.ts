@@ -1,7 +1,10 @@
 
+'use client'
+
+
 import { useMemo } from 'react'
 
-import { FireApp } from '@/utils/app'
+import { FireApp } from '@/utils/FireApp'
 
 
 
@@ -33,9 +36,19 @@ interface UseFireAppInstanceResults {
 
 export function useFireAppInstance(): UseFireAppInstanceResults {
 
+
     const fireApp = useMemo<FireApp | null>(() => {
 
-        return FireApp.getInstance(firebaseConfig)
+        let instance: FireApp | null = null
+
+
+        if (typeof window === 'object') {
+
+            instance = FireApp.getInstance(firebaseConfig)
+        }
+
+        return instance
+
     }, [])
 
 
