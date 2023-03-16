@@ -1,6 +1,6 @@
 
 
-import { Documents } from '@/utils/docu_ments'
+import { Documents } from '@/utils/documents'
 
 
 

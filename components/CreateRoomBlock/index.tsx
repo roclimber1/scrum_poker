@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 
 
 import { FireStore } from '@/utils/fire_store'
-import { Room, Rooms } from '@/utils/roo_ms'
+import { Room, Rooms } from '@/utils/rooms'
 
 
 import { useFireAppInstance } from '@/hooks/useFireAppInstance'
