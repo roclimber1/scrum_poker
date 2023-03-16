@@ -31,6 +31,7 @@ export interface BaseProps {
 }
 
 
+// eslint-disable-next-line no-unused-vars
 export type OptionsCallback = (data: any) => void
 
 

@@ -1,6 +1,6 @@
 
 
-import { collection, doc, getDoc, addDoc, getDocs, query, where, deleteDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, deleteDoc } from 'firebase/firestore'
 
 
 
@@ -14,11 +14,16 @@ export class Documents {
 
     public docsRef: CollectionReference<DocumentData>
 
+    public firestore: Firestore
+    private collectionName: string
+
 
     constructor(
-        public firestore: Firestore,
-        private collectionName: string
+        firestore: Firestore,
+        collectionName: string
     ) {
+        this.firestore = firestore
+        this.collectionName = collectionName
 
         this.docsRef = collection(this.firestore, this.collectionName)
     }

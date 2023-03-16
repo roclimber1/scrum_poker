@@ -23,12 +23,18 @@ export class WebSocketIoServer {
 
     public players: Array<PlayerBase> = []
 
+    public serverOptions: ServerOptions
+    public roomId: string
 
 
     private constructor(
-        public serverOptions: ServerOptions,
-        public roomId: string
+        serverOptions: ServerOptions,
+        roomId: string
     ) {
+
+        this.serverOptions = serverOptions
+        this.roomId = roomId
+
 
         this.io = new Server(this.serverOptions)
 
