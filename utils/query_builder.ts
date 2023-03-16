@@ -15,9 +15,9 @@ export class QueryBuilder<Value = any> {
     private query: Query | null = null
 
     private field: string = ''
-    private value: Value
+    private value: Value | null = null
 
-    private operator: WhereFilterOp
+    private operator: WhereFilterOp = '=='
 
     private collectionRef: CollectionReference<DocumentData>
 

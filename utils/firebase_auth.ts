@@ -1,10 +1,10 @@
 
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, getAdditionalUserInfo, onAuthStateChanged } from 'firebase/auth'
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'firebase/auth'
 
 
 
 import type { FirebaseApp } from 'firebase/app'
-import type { Auth, UserCredential, User, OAuthCredential } from 'firebase/auth'
+import type { Auth, User } from 'firebase/auth'
 
 
 
@@ -104,12 +104,7 @@ export class FirebaseAuth {
             (this.auth && this.provider) ? signInWithPopup(this.auth, this.provider)
                 .then((result) => {
 
-                    const credential: OAuthCredential | null = GoogleAuthProvider.credentialFromResult(result)
-                    const token = credential?.accessToken
-
                     const user = result.user
-
-                    const useData = getAdditionalUserInfo(result)
 
                     resolve(user)
 
@@ -118,9 +113,6 @@ export class FirebaseAuth {
                     const errorCode = error.code
                     const errorMessage = error.message
 
-                    const email = error.customData.email
-
-                    const credential = GoogleAuthProvider.credentialFromError(error)
 
                     reject({
                         errorCode,
