@@ -4,7 +4,7 @@
 
 import { useMemo } from 'react'
 
-import { FireApp } from '@/utils/fire_app'
+import { FireApp } from '@/utils/fireapp'
 
 
 
