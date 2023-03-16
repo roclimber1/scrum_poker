@@ -11,7 +11,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
     const { id } = req.query
 
-    const instance: WebSocketIoServer = WebSocketIoServer.getInstance(res.socket.server, id as string)
+
+    const instance: WebSocketIoServer = WebSocketIoServer.getInstance(res.socket?.server, id as string)
 
     res.socket.server.io = instance.io
 

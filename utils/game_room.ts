@@ -12,10 +12,14 @@ export class Player implements PlayerBase {
     public name: string = ''
     public move: number = 1
 
+    public id: string
+
 
     constructor(
-        public id: string
-    ) {}
+        id: string
+    ) {
+        this.id = id
+    }
 
 
     public setName(name: string) {

@@ -12,7 +12,7 @@ interface ProviderProps {
 }
 
 
-function Provider(props: ProviderProps): JSX.Element {
+function Provider(props: ProviderProps) {
 
     const { children } = props
 
