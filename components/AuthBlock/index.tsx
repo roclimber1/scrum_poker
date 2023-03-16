@@ -2,7 +2,7 @@
 'use client'
 
 
-import { Fragment, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { FirebaseAuth } from '@/utils/FirebaseAuth'
@@ -40,10 +40,13 @@ function AuthBlock() {
 
     const { fireApp } = useFireAppInstance()
 
+
     const authHandler = useMemo<FirebaseAuth | null>(() => {
 
         return fireApp?.app ? FirebaseAuth.getInstance(fireApp.app) : null
-    }, [])
+
+    }, [fireApp?.app])
+
 
 
     const handleSignInClick = () => {
@@ -97,7 +100,7 @@ function AuthBlock() {
                 state && dispatch(setAuthorized(true))
                 state && dispatch(setUser(newUser.serialize()))
             })
-            .catch(({ state, user }) => {
+            .catch(() => {
 
                 //
             })

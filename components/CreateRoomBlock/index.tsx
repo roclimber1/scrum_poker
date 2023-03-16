@@ -57,7 +57,8 @@ function CreateRoomBlock() {
         const roomsHelper = fireStoreInstance?.firestore ? new Rooms(fireStoreInstance?.firestore) : null
 
         return roomsHelper
-    } ,[])
+
+    } ,[fireApp?.app])
 
 
 
@@ -132,7 +133,7 @@ function CreateRoomBlock() {
                 .finally(() => setLoading(false))
         }
 
-    }, [])
+    }, [roomsHelper, user])
 
 
 

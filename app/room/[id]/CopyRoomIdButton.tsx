@@ -39,7 +39,7 @@ function CopyRoomIdButton(props: CopyRoomIdButtonProps) {
 
             timeout && clearTimeout(timeout)
         }
-    }, [])
+    })
 
 
     return (

@@ -49,7 +49,7 @@ function NameBlock(props: BaseProps) {
 
             socketInstance.setName(user?.displayName)
         }
-    }, [user])
+    }, [user, socketInstance])
 
 
     return (
