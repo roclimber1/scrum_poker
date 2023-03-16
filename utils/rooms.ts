@@ -3,7 +3,7 @@
 import { collection, addDoc, Query } from 'firebase/firestore'
 
 import { Documents } from '@/utils/documents'
-import { Decks } from '@/utils/de_cks'
+import { Decks } from '@/utils/decks'
 
 import { QueryBuilder } from '@/utils/query_builder'
 

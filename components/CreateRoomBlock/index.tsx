@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 
 
-import { FireStore } from '@/utils/fire_store'
+import { FireStore } from '@/utils/firestore'
 import { Room, Rooms } from '@/utils/rooms'
 
 
