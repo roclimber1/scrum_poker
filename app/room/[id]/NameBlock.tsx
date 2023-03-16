@@ -8,7 +8,7 @@ import DataInputBlock from '@/components/DataInputBlock'
 
 
 
-import type { BaseProps } from '@/utils/WebSocketIoClient'
+import type { BaseProps } from '@/utils/websocketIo_client'
 import type { RootState } from '@/redux/store'
 
 

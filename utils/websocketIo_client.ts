@@ -4,7 +4,7 @@
 
 import { io } from 'socket.io-client'
 
-import GameRoom, { Player, PlayerBase } from './GameRoom'
+import GameRoom, { Player, PlayerBase } from './game_room'
 
 
 

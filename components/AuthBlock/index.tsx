@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { FirebaseAuth } from '@/utils/FirebaseAuth'
+import { FirebaseAuth } from '@/utils/firebase_auth'
 
 
 
@@ -16,7 +16,7 @@ import { useFireAppInstance } from '@/hooks/useFireAppInstance'
 import Loader from '@/components/Loader'
 
 
-import { ScrumPokerUser } from '@/utils/ScrumPokerUser'
+import { ScrumPokerUser } from '@/utils/scrum_poker_user'
 
 
 

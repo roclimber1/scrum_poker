@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { useEffect } from 'react'
 
-import { Message, WebSocketIoClient } from '@/utils/WebSocketIoClient'
+import { Message, WebSocketIoClient } from '@/utils/websocketIo_client'
 
 
 import ChatBlock from './ChatBlock'
@@ -25,7 +25,7 @@ import { setRoomData } from '@/redux/features/auth'
 
 
 import type { RootState } from '@/redux/store'
-import { PlayerBase } from '@/utils/GameRoom'
+import { PlayerBase } from '@/utils/game_room'
 
 
 

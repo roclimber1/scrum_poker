@@ -8,7 +8,7 @@ import Player from './Player'
 
 
 import type { RootState } from '@/redux/store'
-import type { PlayerBase } from '@/utils/GameRoom'
+import type { PlayerBase } from '@/utils/game_room'
 
 
 
