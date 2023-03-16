@@ -6,7 +6,7 @@
 import DataInputBlock from '@/components/DataInputBlock'
 import { useRouter } from 'next/navigation'
 
-import { Rooms } from '@/utils/Rooms'
+import { Rooms } from '@/utils/rooms'
 
 
 
@@ -22,7 +22,7 @@ export default function Room() {
     const router = useRouter()
 
 
-    const handleButtonClick: MouseEventHandler<HTMLButtonElement> = (event) => {
+    const handleButtonClick: MouseEventHandler<HTMLButtonElement> = () => {
 
         console.debug('Room -> handleButtonClick')
 

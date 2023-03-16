@@ -9,8 +9,8 @@ import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 
 
-import { FireStore } from '@/utils/FireStore'
-import { Room, Rooms } from '@/utils/Rooms'
+import { FireStore } from '@/utils/firestore'
+import { Room, Rooms } from '@/utils/rooms'
 
 
 import { useFireAppInstance } from '@/hooks/useFireAppInstance'
@@ -57,7 +57,8 @@ function CreateRoomBlock() {
         const roomsHelper = fireStoreInstance?.firestore ? new Rooms(fireStoreInstance?.firestore) : null
 
         return roomsHelper
-    } ,[])
+
+    } ,[fireApp?.app])
 
 
 
@@ -132,7 +133,7 @@ function CreateRoomBlock() {
                 .finally(() => setLoading(false))
         }
 
-    }, [])
+    }, [roomsHelper, user])
 
 
 

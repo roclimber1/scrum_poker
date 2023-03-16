@@ -4,7 +4,7 @@
 
 import { io } from 'socket.io-client'
 
-import GameRoom, { Player, PlayerBase } from './GameRoom'
+import GameRoom, { Player, PlayerBase } from './game_room'
 
 
 
@@ -31,6 +31,7 @@ export interface BaseProps {
 }
 
 
+// eslint-disable-next-line no-unused-vars
 export type OptionsCallback = (data: any) => void
 
 

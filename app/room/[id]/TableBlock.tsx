@@ -1,28 +1,24 @@
 
 
-import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import Player from './Player'
 
 
 
-import type { BaseProps } from '@/utils/WebSocketIoClient'
+
 import type { RootState } from '@/redux/store'
-
-import type { PlayerBase } from '@/utils/GameRoom'
-
+import type { PlayerBase } from '@/utils/game_room'
 
 
 
 
-function TableBlock(props: BaseProps) {
+
+function TableBlock() {
 
     const { roomData } = useSelector((state: RootState) => state.auth)
 
     const { players, show } = roomData || {}
-
-    const { socketInstance } = props
 
 
 

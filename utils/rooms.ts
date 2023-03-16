@@ -2,15 +2,15 @@
 
 import { collection, addDoc, Query } from 'firebase/firestore'
 
-import { Documents } from '@/utils/Documents'
-import { Decks } from '@/utils/Decks'
+import { Documents } from '@/utils/documents'
+import { Decks } from '@/utils/decks'
 
-import { QueryBuilder } from '@/utils/QueryBuilder'
+import { QueryBuilder } from '@/utils/query_builder'
 
 
 
 import type { Firestore, DocumentData } from 'firebase/firestore'
-import type { IScrumPokerUser } from '@/utils/ScrumPokerUser'
+import type { IScrumPokerUser } from '@/utils/scrum_poker_user'
 
 
 

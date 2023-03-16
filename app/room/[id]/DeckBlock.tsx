@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 
 
-import type { BaseProps } from '@/utils/WebSocketIoClient'
+import type { BaseProps } from '@/utils/websocketIo_client'
 
 
 

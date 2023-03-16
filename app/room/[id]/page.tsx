@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { useEffect } from 'react'
 
-import { WebSocketIoClient } from '@/utils/WebSocketIoClient'
+import { Message, WebSocketIoClient } from '@/utils/websocketIo_client'
 
 
 import ChatBlock from './ChatBlock'
@@ -25,6 +25,7 @@ import { setRoomData } from '@/redux/features/auth'
 
 
 import type { RootState } from '@/redux/store'
+import { PlayerBase } from '@/utils/game_room'
 
 
 
@@ -48,16 +49,15 @@ function RoomPage({ params }: any) {
     const socketInstance = WebSocketIoClient.getInstance({
         callback: (data) => {
 
-            console.debug('data', data)
 
             const { messages, players, currentPlayer } = data
 
             const newData = {
                 ...data,
-                messages: messages.map(item => {
+                messages: messages.map((item: Message) => {
                     return { ...item }
                 }),
-                players: players.map(item => {
+                players: players.map((item: PlayerBase) => {
                     return { ...item }
                 }),
                 currentPlayer: { ...currentPlayer }
@@ -106,14 +106,10 @@ function RoomPage({ params }: any) {
                 />
 
 
-                <TableBlock
-                    socketInstance={socketInstance}
-                />
+                <TableBlock />
 
 
-                {SHOW_CHAT ? <ChatBlock
-                    socketInstance={socketInstance}
-                /> : null}
+                {SHOW_CHAT ? <ChatBlock /> : null}
             </> : null}
 
         </div>

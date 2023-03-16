@@ -6,8 +6,8 @@ import { Server } from 'socket.io'
 
 import type { ServerOptions, Socket } from 'socket.io'
 
-import type { Message } from '@/utils/WebSocketIoClient'
-import type { PlayerBase } from './GameRoom'
+import type { Message } from '@/utils/websocketIo_client'
+import type { PlayerBase } from './game_room'
 
 
 
@@ -23,12 +23,18 @@ export class WebSocketIoServer {
 
     public players: Array<PlayerBase> = []
 
+    public serverOptions: ServerOptions
+    public roomId: string
 
 
     private constructor(
-        public serverOptions: ServerOptions,
-        public roomId: string
+        serverOptions: ServerOptions,
+        roomId: string
     ) {
+
+        this.serverOptions = serverOptions
+        this.roomId = roomId
+
 
         this.io = new Server(this.serverOptions)
 

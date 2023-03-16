@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev-turbo": "next dev --turbo",
-    "build": "next build",
+    "build": "CI=false && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -33,6 +33,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.1",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7"

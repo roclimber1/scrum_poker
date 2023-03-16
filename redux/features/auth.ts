@@ -5,9 +5,9 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { IScrumPokerUser } from '@/utils/ScrumPokerUser'
+import type { IScrumPokerUser } from '@/utils/scrum_poker_user'
 
-import type { RoomData } from '@/utils/WebSocketIoClient'
+import type { RoomData } from '@/utils/websocketIo_client'
 
 
 

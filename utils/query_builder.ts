@@ -14,15 +14,20 @@ export class QueryBuilder<Value = any> {
 
     private query: Query | null = null
 
-    private field: string
+    private field: string = ''
     private value: Value
 
     private operator: WhereFilterOp
 
+    private collectionRef: CollectionReference<DocumentData>
+
 
     constructor(
-        private collectionRef: CollectionReference<DocumentData>
-    ) {}
+        collectionRef: CollectionReference<DocumentData>
+    ) {
+
+        this.collectionRef = collectionRef
+    }
 
 
     public setField(field: string) {

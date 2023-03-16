@@ -1,5 +1,5 @@
 
-import type { PlayerBase } from '@/utils/GameRoom'
+import type { PlayerBase } from '@/utils/game_room'
 
 
 
