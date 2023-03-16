@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev-turbo": "next dev --turbo",
-    "build": "next build",
+    "build": "CI=false && next build",
     "start": "next start",
     "lint": "next lint"
   },
