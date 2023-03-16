@@ -4,7 +4,7 @@
 
 import Link from 'next/link'
 
-import { Room, Rooms } from '@/utils/rooms'
+import { Room, Rooms } from '@/utils/roo_ms'
 
 
 
