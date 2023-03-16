@@ -6,7 +6,7 @@
 import DataInputBlock from '@/components/DataInputBlock'
 import { useRouter } from 'next/navigation'
 
-import { Rooms } from '@/utils/roo_ms'
+import { Rooms } from '@/utils/rooms'
 
 
 
