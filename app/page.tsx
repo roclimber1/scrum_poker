@@ -24,7 +24,7 @@ export default function Home() {
             <Link href={'/auth'}>
 
                 <button className="bg-sky-900 hover:bg-sky-700 rounded-md text-base p-3 my-3">
-                    Let's create your poker room 🤍
+                    {'Let\'s create your poker room 🤍'}
                 </button>
             </Link>
 

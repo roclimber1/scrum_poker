@@ -22,7 +22,7 @@ export default function Room() {
     const router = useRouter()
 
 
-    const handleButtonClick: MouseEventHandler<HTMLButtonElement> = (event) => {
+    const handleButtonClick: MouseEventHandler<HTMLButtonElement> = () => {
 
         console.debug('Room -> handleButtonClick')
 
