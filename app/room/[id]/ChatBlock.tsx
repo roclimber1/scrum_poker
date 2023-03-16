@@ -1,25 +1,20 @@
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import DataInputBlock from '@/components/DataInputBlock'
 
 
 
-import type { Message, WebSocketIoClient } from '@/utils/WebSocketIoClient'
+import type { BaseProps, Message } from '@/utils/WebSocketIoClient'
 import type { RootState } from '@/redux/store'
 
 
 
 
-interface ChatBlockProps {
-    socketInstance: WebSocketIoClient
-}
 
 
-
-
-function ChatBlock(props: ChatBlockProps) {
+function ChatBlock(props: BaseProps) {
 
     const { socketInstance } = props
     const { roomData } = useSelector((state: RootState) => state.auth)

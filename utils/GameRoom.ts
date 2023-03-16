@@ -2,7 +2,7 @@
 
 export interface PlayerBase {
     id: string,
-    move?: string,
+    move?: number,
     name?: string
 }
 
@@ -10,7 +10,7 @@ export interface PlayerBase {
 export class Player implements PlayerBase {
 
     public name: string = ''
-    public move: string = '1'
+    public move: number = 1
 
 
     constructor(
@@ -41,41 +41,22 @@ class GameRoom implements GameRoomBase {
 
 
     constructor(
-        rooms: Map<string, Set<string>>,
         id: string
     ) {
 
         this.id = id
-
-        this.updatePlayers(rooms)
     }
 
 
 
-    public updatePlayers(rooms: Map<string, Set<string>>) {
+    public addPlayer(id: string) {
 
-        const playersSet = rooms.get(this.id)
-
-
-        playersSet?.forEach((value) => {
-
-            if (!this.players.find(item => item.id == value)) {
-
-                this.players.push(new Player(value))
-            }
-        })
-    }
+        const player = this.players.find(item => item.id == id)
 
 
-    public getRoomData(): GameRoomBase {
+        if (!player) {
 
-
-        return {
-            id: this.id,
-            players: this.players.map((item) => ({
-                id: item.id,
-                name: item.name
-            }))
+            this.players.push(new Player(id))
         }
     }
 }

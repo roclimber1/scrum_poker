@@ -1,16 +1,13 @@
 
 import { Server } from 'socket.io'
 
-import GameRoom from '@/utils/GameRoom'
-
-// import { v4 as uuidv4 } from 'uuid'
 
 
 
 import type { ServerOptions, Socket } from 'socket.io'
-import type { GameRoomBase } from '@/utils/GameRoom'
 
 import type { Message } from '@/utils/WebSocketIoClient'
+import type { PlayerBase } from './GameRoom'
 
 
 
@@ -22,6 +19,9 @@ export class WebSocketIoServer {
     public socket: Socket | null = null
 
     private static instance: WebSocketIoServer
+
+
+    public players: Array<PlayerBase> = []
 
 
 
