@@ -6,15 +6,18 @@
 import { useSelector, useDispatch } from 'react-redux'
 
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect } from 'react'
 
-import { RoomData, WebSocketIoClient } from '@/utils/WebSocketIoClient'
+import { WebSocketIoClient } from '@/utils/WebSocketIoClient'
+
 
 import ChatBlock from './ChatBlock'
-import TableBlock from './TableBlock'
+import DeckBlock from './DeckBlock'
+import NameBlock from './NameBlock'
 
 import RoomOwnerBlock from './RoomOwnerBlock'
-import NameBlock from './NameBlock'
+import TableBlock from './TableBlock'
+
 
 import { setRoomData } from '@/redux/features/auth'
 
@@ -25,6 +28,8 @@ import type { RootState } from '@/redux/store'
 
 
 
+const SHOW_CHAT = false
+
 
 
 
@@ -32,7 +37,7 @@ import type { RootState } from '@/redux/store'
 function RoomPage({ params }: any) {
 
     const { authorized, roomData } = useSelector((state: RootState) => state.auth)
-    const { currentPlayer } = roomData || {}
+    const { currentPlayer, average } = roomData || {}
 
     const dispatch = useDispatch()
 
@@ -88,15 +93,27 @@ function RoomPage({ params }: any) {
             />
 
 
+            <div className="flex flex-col rounded-lg bg-lime-700 justify-center items-center m-3 p-3">
+                <div>Average:</div>
+                <div>{average}</div>
+            </div>
+
+
             {currentPlayer?.name ? <>
+
+                <DeckBlock
+                    socketInstance={socketInstance}
+                />
+
+
                 <TableBlock
                     socketInstance={socketInstance}
                 />
 
 
-                <ChatBlock
+                {SHOW_CHAT ? <ChatBlock
                     socketInstance={socketInstance}
-                />
+                /> : null}
             </> : null}
 
         </div>

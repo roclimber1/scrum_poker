@@ -4,10 +4,11 @@
 
 import { io } from 'socket.io-client'
 
+import GameRoom, { Player, PlayerBase } from './GameRoom'
+
 
 
 import type { Socket } from 'socket.io-client'
-import { Player, PlayerBase } from './GameRoom'
 
 
 
@@ -25,6 +26,10 @@ export interface Move {
 }
 
 
+export interface BaseProps {
+    socketInstance: WebSocketIoClient
+}
+
 
 export type OptionsCallback = (data: any) => void
 
@@ -36,7 +41,9 @@ interface Options {
 
 
 export type RoomData = {
+    average: number,
     currentPlayer: PlayerBase | null,
+    gameRoom: GameRoom | null,
     id: string,
     messages: Array<Message>,
     players: Array<PlayerBase>,
@@ -50,7 +57,9 @@ export class WebSocketIoClient {
     public socket: Socket | null = null
 
     public roomData: RoomData = {
+        average: 0,
         currentPlayer: null,
+        gameRoom: null,
         id: '',
         messages: [],
         players: [],
@@ -87,9 +96,9 @@ export class WebSocketIoClient {
 
 
             this.roomData.id = roomId
-            this.roomData.currentPlayer = new Player(this.socket.id)
+            this.roomData.currentPlayer = new Player(this.socket?.id as string)
 
-            this.addPlayer(this.socket.id)
+            this.addPlayer(this.socket?.id as string)
 
 
             this.setMessageHandler(callback)
@@ -132,7 +141,25 @@ export class WebSocketIoClient {
 
         this.socket && this.socket.on('moveHadBeenMade', (move: Move) => {
 
-            // this.move = move
+            const { playerId, value } = move
+
+            let sum = 0
+
+            this.roomData.players = this.roomData.players.map(item => {
+
+                if (item.id == playerId) {
+
+                    item.move = value
+                }
+
+                sum += item.move || 0
+
+                return item
+            })
+
+            const average = sum / (this.roomData.players?.length || 1)
+
+            this.roomData.average = average
 
             callback && callback(this.roomData)
         })
@@ -170,7 +197,7 @@ export class WebSocketIoClient {
 
             this.roomData.players = this.roomData.players.map(item => {
 
-                item.move = '0'
+                item.move = 0
 
                 return item
             })
@@ -213,7 +240,7 @@ export class WebSocketIoClient {
     public makeMove(value: number) {
 
         const move: Move = {
-            playerId: this.socket?.id,
+            playerId: this.socket?.id as string,
             value
         }
 

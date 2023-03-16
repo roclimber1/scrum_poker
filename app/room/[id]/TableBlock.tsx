@@ -7,44 +7,32 @@ import Player from './Player'
 
 
 
-import type { WebSocketIoClient } from '@/utils/WebSocketIoClient'
+import type { BaseProps } from '@/utils/WebSocketIoClient'
 import type { RootState } from '@/redux/store'
 
 import type { PlayerBase } from '@/utils/GameRoom'
 
 
 
-interface TableBlockProps {
-    socketInstance: WebSocketIoClient
-}
 
 
-function TableBlock(props: TableBlockProps) {
+function TableBlock(props: BaseProps) {
 
     const { roomData } = useSelector((state: RootState) => state.auth)
+
+    const { players, show } = roomData || {}
 
     const { socketInstance } = props
 
 
-    const [playersBlock, setPlayersBlock] = useState(null)
 
 
+    const playersBlock = players?.map((player: PlayerBase) => (<Player
+        key={`player-${player.id}`}
+        player={player}
+        show={show as boolean}
+    />))
 
-    useEffect(() => {
-
-        const { players, show } = roomData || {}
-
-
-        setPlayersBlock(
-
-            players?.map((player: PlayerBase) => (<Player
-                key={`player-${player.id}`}
-                player={player}
-                show={show}
-            />))
-        )
-
-    }, [roomData])
 
 
     return (

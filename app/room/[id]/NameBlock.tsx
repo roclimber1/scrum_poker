@@ -8,19 +8,15 @@ import DataInputBlock from '@/components/DataInputBlock'
 
 
 
-import type { WebSocketIoClient } from '@/utils/WebSocketIoClient'
+import type { BaseProps } from '@/utils/WebSocketIoClient'
 import type { RootState } from '@/redux/store'
 
 
 
 
-interface NameBlockProps {
-    socketInstance: WebSocketIoClient
-}
 
 
-
-function NameBlock(props: NameBlockProps) {
+function NameBlock(props: BaseProps) {
 
     const { roomData, user } = useSelector((state: RootState) => state.auth)
 

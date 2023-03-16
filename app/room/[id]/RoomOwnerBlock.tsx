@@ -8,14 +8,13 @@ import CopyRoomIdButton from './CopyRoomIdButton'
 
 
 
-import type { WebSocketIoClient } from '@/utils/WebSocketIoClient'
+import type { BaseProps } from '@/utils/WebSocketIoClient'
 import type { RootState } from '@/redux/store'
 
 
 
-interface RoomOwnerBlockProps {
-    id: string,
-    socketInstance: WebSocketIoClient
+interface RoomOwnerBlockProps extends BaseProps {
+    id: string
 }
 
 
