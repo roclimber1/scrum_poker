@@ -1,5 +1,6 @@
 
 import { Server } from 'socket.io'
+import { Player } from './game_room'
 
 
 
@@ -48,9 +49,23 @@ export class WebSocketIoServer {
 
             this.socket = socket
 
+            this.addPlayer(this.socket.id)
+
             this.initRoom()
             this.setMessageHandler()
         })
+    }
+
+
+    private addPlayer(id: string) {
+
+        const player = this.players.find(item => item.id == id)
+
+
+        if (!player) {
+
+            this.players.push(new Player(id))
+        }
     }
 
 
@@ -65,7 +80,9 @@ export class WebSocketIoServer {
 
             console.log(`socket ${id} has joined room ${room}`)
 
-            this.io.to(this.roomId).emit('playerJoinedTheRoom', { id, room })
+            this.addPlayer(id)
+
+            this.io.to(this.roomId).emit('playerJoinedTheRoom', { id, room, players: this.players })
         })
 
 
@@ -73,7 +90,9 @@ export class WebSocketIoServer {
 
             console.log(`socket ${id} has joined room ${room}`)
 
-            this.io.to(this.roomId).emit('playerLeftTheRoom', { id, room })
+            this.players = this.players.filter(item => item.id != id)
+
+            this.io.to(this.roomId).emit('playerLeftTheRoom', { id, room, players: this.players })
         })
 
     }
@@ -119,7 +138,19 @@ export class WebSocketIoServer {
 
         this.socket && this.socket.on('setName', (data) => {
 
-            this.io.to(this.roomId).emit('setPlayerName', data)
+            const { id, name } = data
+
+            this.players = this.players.map(item => {
+
+                if (item.id == id) {
+
+                    item.name = name
+                }
+
+                return item
+            })
+
+            this.io.to(this.roomId).emit('setPlayerName', { id, name, players: this.players })
         })
     }
 }
