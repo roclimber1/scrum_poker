@@ -99,8 +99,6 @@ export class WebSocketIoClient {
             this.roomData.id = roomId
             this.roomData.currentPlayer = new Player(this.socket?.id as string)
 
-            this.addPlayer(this.socket?.id as string)
-
 
             this.setMessageHandler(callback)
         })
@@ -115,18 +113,6 @@ export class WebSocketIoClient {
         }
 
         return WebSocketIoClient.instance
-    }
-
-
-    private addPlayer(id: string) {
-
-        const player = this.roomData.players.find(item => item.id == id)
-
-
-        if (!player) {
-
-            this.roomData.players.push(new Player(id))
-        }
     }
 
 
@@ -160,7 +146,7 @@ export class WebSocketIoClient {
 
             const average = sum / (this.roomData.players?.length || 1)
 
-            this.roomData.average = average
+            this.roomData.average = Math.round(average * 10) / 10
 
             callback && callback(this.roomData)
         })
@@ -168,9 +154,9 @@ export class WebSocketIoClient {
 
         this.socket && this.socket.on('playerJoinedTheRoom', (data) => {
 
-            const { id } = data
+            const { players } = data
 
-            this.addPlayer(id)
+            this.roomData.players = players
 
             callback && callback(this.roomData)
         })
@@ -178,9 +164,9 @@ export class WebSocketIoClient {
 
         this.socket && this.socket.on('playerLeftTheRoom', (data) => {
 
-            const { id } = data
+            const { players } = data
 
-            this.roomData.players = this.roomData.players.filter(item => item.id != id)
+            this.roomData.players = players
 
             callback && callback(this.roomData)
         })
@@ -209,17 +195,9 @@ export class WebSocketIoClient {
 
         this.socket && this.socket.on('setPlayerName', (data) => {
 
-            const { id, name } = data
+            const { id, name, players } = data
 
-            this.roomData.players = this.roomData.players.map(item => {
-
-                if (item.id == id) {
-
-                    item.name = name
-                }
-
-                return item
-            })
+            this.roomData.players = players
 
             if (this.roomData.currentPlayer && (this.roomData.currentPlayer?.id == id)) {
 
