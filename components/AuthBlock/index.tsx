@@ -66,6 +66,8 @@ function AuthBlock() {
                 dispatch(setUser(null))
                 dispatch(setAuthorized(false))
 
+                console.debug(error)
+
                 setError(error)
             })
     }
@@ -82,6 +84,8 @@ function AuthBlock() {
                 setError('')
             })
             ?.catch(error => {
+
+                console.debug(error)
 
                 setError(error)
             })
