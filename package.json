@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 4000",
     "dev-turbo": "next dev --turbo",
     "build": "CI=false && next build",
     "build-local": "next build",
-    "start": "next start",
+    "start": "next start --port 4000",
     "lint": "next lint"
   },
   "dependencies": {

@@ -27,6 +27,9 @@ export class WebSocketIoServer {
     public serverOptions: ServerOptions
     public roomId: string
 
+    public ignoreHost: boolean = false
+    public hostId: string = ''
+
 
     private constructor(
         serverOptions: ServerOptions,
@@ -82,7 +85,7 @@ export class WebSocketIoServer {
 
             this.addPlayer(id)
 
-            this.io.to(this.roomId).emit('playerJoinedTheRoom', { id, room, players: this.players })
+            this.io.to(this.roomId).emit('playerJoinedTheRoom', { id, room, players: this.players, ignoreHost: this.ignoreHost, hostId: this.hostId })
         })
 
 
@@ -120,7 +123,42 @@ export class WebSocketIoServer {
 
         this.socket && this.socket.on('newMove', (move) => {
 
-            this.io.to(this.roomId).emit('moveHadBeenMade', move)
+            const { playerId, value } = move
+
+            let sum = 0
+            let amount = 0
+            let ready = false
+            let length = 0
+
+            this.players = this.players.map(item => {
+
+                if (item.id == playerId) {
+
+                    item.move = value
+                }
+
+                const ignoreHostCondition: boolean = this.ignoreHost && (this.hostId == item.id)
+
+                if (!ignoreHostCondition) {
+
+                    sum += item.move || 0
+                    amount += item.move ? 1 : 0
+
+                    length++
+                }
+
+                return item
+            })
+
+            if (amount == length) {
+
+                ready = true
+            }
+
+            const average = sum / (length || 1)
+
+
+            this.io.to(this.roomId).emit('moveHadBeenMade', { average, players: this.players, ready })
         })
 
 
@@ -130,9 +168,27 @@ export class WebSocketIoServer {
         })
 
 
+        this.socket && this.socket.on('setIgnoreHostFlag', (data) => {
+
+            const { value, id } = data
+
+            this.hostId = id
+            this.ignoreHost = value
+
+            this.io.to(this.roomId).emit('updateIgnoreHostFlag', { hostId: id, ignoreHost: value })
+        })
+
+
         this.socket && this.socket.on('clearResults', () => {
 
-            this.io.to(this.roomId).emit('gameResultsClear')
+            this.players = this.players.map(item => {
+
+                item.move = 0
+
+                return item
+            })
+
+            this.io.to(this.roomId).emit('gameResultsClear', { players: this.players })
         })
 
 
