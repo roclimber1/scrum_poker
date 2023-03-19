@@ -39,11 +39,11 @@ function CopyRoomIdButton(props: CopyRoomIdButtonProps) {
 
             timeout && clearTimeout(timeout)
         }
-    })
+    }, [])
 
 
     return (
-        <div className="fex flex-row">
+        <div className="flex justify-center items-center">
 
             <span className="m-2 p-2">{id}</span>
 

@@ -8,19 +8,22 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { IScrumPokerUser } from '@/utils/scrum_poker_user'
 
 import type { RoomData } from '@/utils/websocketIo_client'
+import type { DocumentData } from 'firebase/firestore'
 
 
 
 export interface AuthState {
     authorized: boolean,
     roomData: RoomData | null,
-    user: IScrumPokerUser | null
+    user: IScrumPokerUser | null,
+    userRoom: DocumentData | null,
 }
 
 const initialState: AuthState = {
     authorized: false,
+    roomData: null,
     user: null,
-    roomData: null
+    userRoom: null
 }
 
 export const counterSlice = createSlice({
@@ -42,11 +45,16 @@ export const counterSlice = createSlice({
         setRoomData: (state, action: PayloadAction<RoomData | null>) => {
 
             state.roomData = action.payload
+        },
+
+        setUserRoom: (state, action: PayloadAction<DocumentData>) => {
+
+            state.userRoom = action.payload
         }
     }
 })
 
 
-export const { setAuthorized, setUser, setRoomData } = counterSlice.actions
+export const { setAuthorized, setUser, setRoomData, setUserRoom } = counterSlice.actions
 
 export default counterSlice

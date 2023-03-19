@@ -2,9 +2,11 @@
 'use client'
 
 
-import Link from 'next/link'
+import { useDispatch } from 'react-redux'
+import { useRouter } from 'next/navigation'
 
 import { Room, Rooms } from '@/utils/rooms'
+import { setUserRoom } from '@/redux/features/auth'
 
 
 
@@ -26,6 +28,9 @@ function RoomItem(props: RoomProps) {
     const { room, handleRemove } = props
     const { name, id } = room
 
+    const dispatch = useDispatch()
+    const router = useRouter()
+
 
     const handleClickRemove: MouseEventHandler<HTMLDivElement> = (event) => {
 
@@ -36,9 +41,20 @@ function RoomItem(props: RoomProps) {
     }
 
 
-    return (<Link href={Rooms.getRoomLink(id as string)}>
+    const handleRoomClick = () => {
 
-        <div className="bg-yellow-600 hover:bg-yellow-400 rounded-md text-base p-3 my-3 flex flex-row">
+        dispatch(setUserRoom(room))
+
+        router.push(Rooms.getRoomLink(id as string))
+    }
+
+
+    return (<>
+
+        <button
+            className="bg-yellow-600 hover:bg-yellow-400 rounded-md text-base p-3 my-3 flex flex-row cursor-pointer"
+            onClick={handleRoomClick}
+        >
 
             <div className="flex-grow"><h1>{name}</h1></div>
 
@@ -50,8 +66,8 @@ function RoomItem(props: RoomProps) {
                 ☠️
             </div>
 
-        </div>
-    </Link>)
+        </button>
+    </>)
 }
 
 

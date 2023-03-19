@@ -11,7 +11,10 @@ import { useEffect } from 'react'
 import { Message, WebSocketIoClient } from '@/utils/websocketIo_client'
 
 
+
+import AverageBlock from './AverageBlock'
 import ChatBlock from './ChatBlock'
+
 import DeckBlock from './DeckBlock'
 import NameBlock from './NameBlock'
 
@@ -24,8 +27,10 @@ import { setRoomData } from '@/redux/features/auth'
 
 
 
+
 import type { RootState } from '@/redux/store'
-import { PlayerBase } from '@/utils/game_room'
+import type { PlayerBase } from '@/utils/game_room'
+
 
 
 
@@ -37,13 +42,18 @@ const SHOW_CHAT = false
 
 function RoomPage({ params }: any) {
 
-    const { authorized, roomData } = useSelector((state: RootState) => state.auth)
-    const { currentPlayer, average } = roomData || {}
+    const { authorized, roomData, userRoom, user } = useSelector((state: RootState) => state.auth)
+    const { currentPlayer, show, ignoreHost, hostId } = roomData || {}
+
+    const showOwnerPanel: boolean = (userRoom?.owner_id == user?.uid) && authorized
+    const showDeckBlock: boolean = !(ignoreHost && (hostId == currentPlayer?.id))
+
+
 
     const dispatch = useDispatch()
 
 
-    const id = params?.id
+    const id: string = params?.id
 
 
     const socketInstance = WebSocketIoClient.getInstance({
@@ -82,7 +92,7 @@ function RoomPage({ params }: any) {
     return (
         <div className="fex flex-col">
 
-            {authorized ? <RoomOwnerBlock
+            {showOwnerPanel ? <RoomOwnerBlock
                 id={id}
                 socketInstance={socketInstance}
             /> : null}
@@ -93,17 +103,16 @@ function RoomPage({ params }: any) {
             />
 
 
-            <div className="flex flex-col rounded-lg bg-lime-700 justify-center items-center m-3 p-3">
-                <div>Average:</div>
-                <div>{average}</div>
-            </div>
-
-
             {currentPlayer?.name ? <>
 
-                <DeckBlock
-                    socketInstance={socketInstance}
-                />
+                <AverageBlock />
+
+
+                {showDeckBlock ? <div className={`${show ? 'pointer-events-none' : ''} flex justify-center items-center`}>
+                    <DeckBlock
+                        socketInstance={socketInstance}
+                    />
+                </div> : null}
 
 
                 <TableBlock />

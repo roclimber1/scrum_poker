@@ -10,7 +10,7 @@ export interface PlayerBase {
 export class Player implements PlayerBase {
 
     public name: string = ''
-    public move: number = 1
+    public move: number = 0
 
     public id: string
 

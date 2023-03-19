@@ -45,10 +45,13 @@ export type RoomData = {
     average: number,
     currentPlayer: PlayerBase | null,
     gameRoom: GameRoom | null,
+    hostId: string,
     id: string,
+    ignoreHost: boolean,
     messages: Array<Message>,
     players: Array<PlayerBase>,
-    show: boolean
+    ready: boolean,
+    show: boolean,
 }
 
 
@@ -61,10 +64,13 @@ export class WebSocketIoClient {
         average: 0,
         currentPlayer: null,
         gameRoom: null,
+        hostId: '',
         id: '',
+        ignoreHost: false,
         messages: [],
         players: [],
-        show: true
+        ready: false,
+        show: false
     }
 
 
@@ -83,6 +89,8 @@ export class WebSocketIoClient {
 
 
         await fetch(`/api/socket/${roomId}`)
+            .then((data) => console.debug('OK > fetch(/api/socket)', data))
+            .catch((data) => console.debug('ERROR > fetch(/api/socket)', data))
 
         this.socket = io()
 
@@ -126,27 +134,14 @@ export class WebSocketIoClient {
         })
 
 
-        this.socket && this.socket.on('moveHadBeenMade', (move: Move) => {
+        this.socket && this.socket.on('moveHadBeenMade', (data) => {
 
-            const { playerId, value } = move
+            const { average, players, ready } = data
 
-            let sum = 0
+            this.roomData.players = players
+            this.roomData.average = average
 
-            this.roomData.players = this.roomData.players.map(item => {
-
-                if (item.id == playerId) {
-
-                    item.move = value
-                }
-
-                sum += item.move || 0
-
-                return item
-            })
-
-            const average = sum / (this.roomData.players?.length || 1)
-
-            this.roomData.average = Math.round(average * 10) / 10
+            this.roomData.ready = ready
 
             callback && callback(this.roomData)
         })
@@ -154,9 +149,12 @@ export class WebSocketIoClient {
 
         this.socket && this.socket.on('playerJoinedTheRoom', (data) => {
 
-            const { players } = data
+            const { players, ignoreHost, hostId } = data
 
             this.roomData.players = players
+
+            this.roomData.ignoreHost = ignoreHost
+            this.roomData.hostId = hostId
 
             callback && callback(this.roomData)
         })
@@ -180,14 +178,15 @@ export class WebSocketIoClient {
         })
 
 
-        this.socket && this.socket.on('gameResultsClear', () => {
+        this.socket && this.socket.on('gameResultsClear', (data) => {
 
-            this.roomData.players = this.roomData.players.map(item => {
+            const { players } = data
 
-                item.move = 0
+            this.roomData.players = players
+            this.roomData.average = 0
 
-                return item
-            })
+            this.roomData.ready = false
+            this.roomData.show = false
 
             callback && callback(this.roomData)
         })
@@ -203,6 +202,17 @@ export class WebSocketIoClient {
 
                 this.roomData.currentPlayer.name = name
             }
+
+            callback && callback(this.roomData)
+        })
+
+
+        this.socket && this.socket.on('updateIgnoreHostFlag', (data) => {
+
+            const { hostId, ignoreHost } = data
+
+            this.roomData.ignoreHost = ignoreHost
+            this.roomData.hostId = hostId
 
             callback && callback(this.roomData)
         })
@@ -245,6 +255,15 @@ export class WebSocketIoClient {
         this.socket && this.socket.emit('setName', {
             id: this.socket.id,
             name
+        })
+    }
+
+
+    public setIgnoreHostFlag(value: boolean) {
+
+        this.socket && this.socket.emit('setIgnoreHostFlag', {
+            id: this.socket.id,
+            value
         })
     }
 }
