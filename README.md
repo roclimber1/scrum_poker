@@ -1,5 +1,5 @@
 # scrum_poker
-Scrum Poker application with Next.JS 13, TailwindCSS, Redux Toolkit and Firebase
+Scrum Poker application with Next.JS 13, TailwindCSS, Redux Toolkit, Firebase and Socket.IO
 
 ## Getting Started
 
