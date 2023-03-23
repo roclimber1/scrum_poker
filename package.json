@@ -7,7 +7,7 @@
     "dev-turbo": "next dev --turbo",
     "build": "CI=false && next build",
     "build-local": "next build",
-    "start": "next start --port 4000",
+    "start": "next start --port 8080",
     "lint": "next lint"
   },
   "dependencies": {
