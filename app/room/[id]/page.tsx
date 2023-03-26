@@ -29,7 +29,8 @@ import { setRoomData } from '@/redux/features/auth'
 
 
 import type { RootState } from '@/redux/store'
-import type { PlayerBase } from '@/utils/game_room'
+import type { PlayerBase } from '@/utils/interfaces'
+
 
 
 
