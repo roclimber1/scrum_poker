@@ -24,13 +24,10 @@ export class WebSocketIoServer {
 
     private rooms: Map<string, GameRoom> = new Map<string, GameRoom>()
 
-    // public players: Array<PlayerBase> = []
 
     public serverOptions: ServerOptions
     private static roomId: string
 
-    // public ignoreHost: boolean = false
-    // public hostId: string = ''
 
 
     private constructor(
