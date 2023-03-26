@@ -12,15 +12,26 @@ Scrum Poker application with Next.JS 13, TailwindCSS, Redux Toolkit, Firebase an
 </p>
 
 
-## Getting Started
-
-First, run the development server:
+### To run the development server
 
 ```bash
 npm run dev
 # or
 npm run dev-turbo
-# or
-yarn dev
-# or
-pnpm dev
+```
+
+### To make production build
+```bash
+npm run build
+```
+
+### To run the production server
+```bash
+npm run start
+```
+
+### Deploy application with Google Cloud
+
+```bash
+gcloud app deploy
+```

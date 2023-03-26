@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev --port 4000",
     "dev-turbo": "next dev --turbo",
-    "build": "CI=false && next build",
-    "build-local": "next build",
+    "build-no-ci": "CI=false && next build",
+    "build": "next build",
     "start": "next start --port 8080",
     "lint": "next lint"
   },
