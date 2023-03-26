@@ -4,11 +4,14 @@
 
 import { io } from 'socket.io-client'
 
-import GameRoom, { Player, PlayerBase } from './game_room'
+import GameRoom, { Player } from './game_room'
 
 
 
 import type { Socket } from 'socket.io-client'
+import type { Move } from './interfaces'
+
+import type { PlayerBase } from '@/utils/interfaces'
 
 
 
@@ -17,12 +20,6 @@ export type Message = {
     author: string,
     message: string,
     timestamp?: string
-}
-
-
-export interface Move {
-    playerId: string,
-    value: number
 }
 
 
@@ -74,6 +71,9 @@ export class WebSocketIoClient {
     }
 
 
+    public roomId: string = ''
+
+
     private static instance: WebSocketIoClient
 
 
@@ -103,6 +103,7 @@ export class WebSocketIoClient {
 
             console.debug('>> connected')
 
+            this.roomId = roomId
 
             this.roomData.id = roomId
             this.roomData.currentPlayer = new Player(this.socket?.id as string)
@@ -121,6 +122,14 @@ export class WebSocketIoClient {
         }
 
         return WebSocketIoClient.instance
+    }
+
+
+    private checkIfCurrentPlayer(id: string): boolean {
+
+        const state: boolean = this.roomData.currentPlayer ? (this.roomData.currentPlayer?.id == id) : false
+
+        return state
     }
 
 
@@ -188,6 +197,12 @@ export class WebSocketIoClient {
             this.roomData.ready = false
             this.roomData.show = false
 
+
+            if (this.roomData.currentPlayer) {
+
+                this.roomData.currentPlayer.move = 0
+            }
+
             callback && callback(this.roomData)
         })
 
@@ -198,7 +213,8 @@ export class WebSocketIoClient {
 
             this.roomData.players = players
 
-            if (this.roomData.currentPlayer && (this.roomData.currentPlayer?.id == id)) {
+
+            if (this.checkIfCurrentPlayer(id) && this.roomData.currentPlayer) {
 
                 this.roomData.currentPlayer.name = name
             }
@@ -222,7 +238,7 @@ export class WebSocketIoClient {
 
     public sendMessage(message: Message) {
 
-        this.socket && this.socket.emit('createMessage', message)
+        this.socket && this.socket.emit('createMessage', { message, roomId: this.roomId })
     }
 
 
@@ -233,20 +249,25 @@ export class WebSocketIoClient {
             value
         }
 
+        if (this.checkIfCurrentPlayer(this.socket?.id as string) && this.roomData.currentPlayer) {
 
-        this.socket && this.socket.emit('newMove', move)
+            this.roomData.currentPlayer.move = value
+        }
+
+
+        this.socket && this.socket.emit('newMove', { move, roomId: this.roomId })
     }
 
 
     public showHideResults(value: boolean) {
 
-        this.socket && this.socket.emit('resultsVisibility', value)
+        this.socket && this.socket.emit('resultsVisibility', { value, roomId: this.roomId })
     }
 
 
     public clearResults() {
 
-        this.socket && this.socket.emit('clearResults')
+        this.socket && this.socket.emit('clearResults', { roomId: this.roomId })
     }
 
 
@@ -254,7 +275,8 @@ export class WebSocketIoClient {
 
         this.socket && this.socket.emit('setName', {
             id: this.socket.id,
-            name
+            name,
+            roomId: this.roomId
         })
     }
 
@@ -263,6 +285,7 @@ export class WebSocketIoClient {
 
         this.socket && this.socket.emit('setIgnoreHostFlag', {
             id: this.socket.id,
+            roomId: this.roomId,
             value
         })
     }

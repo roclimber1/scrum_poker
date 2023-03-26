@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 
 
 
-import type { PlayerBase } from '@/utils/game_room'
+import type { PlayerBase } from '@/utils/interfaces'
 import type { RootState } from '@/redux/store'
 
 

@@ -1,14 +1,14 @@
 
 import { Server } from 'socket.io'
-import { Player } from './game_room'
 
+import GameRoom from './game_room'
 
 
 
 import type { ServerOptions, Socket } from 'socket.io'
 
 import type { Message } from '@/utils/websocketIo_client'
-import type { PlayerBase } from './game_room'
+import type { Move, GameRoomBase, SetIgnoreHostFlagData, SetPlayerNameData, WithRoomId } from './interfaces'
 
 
 
@@ -22,27 +22,49 @@ export class WebSocketIoServer {
     private static instance: WebSocketIoServer
 
 
-    public players: Array<PlayerBase> = []
+    private rooms: Map<string, GameRoom> = new Map<string, GameRoom>()
+
+    // public players: Array<PlayerBase> = []
 
     public serverOptions: ServerOptions
-    public roomId: string
+    private static roomId: string
 
-    public ignoreHost: boolean = false
-    public hostId: string = ''
+    // public ignoreHost: boolean = false
+    // public hostId: string = ''
 
 
     private constructor(
-        serverOptions: ServerOptions,
-        roomId: string
+        serverOptions: ServerOptions
     ) {
 
         this.serverOptions = serverOptions
-        this.roomId = roomId
 
 
         this.io = new Server(this.serverOptions)
 
         this.init()
+    }
+
+
+    private getRoomById(roomId: string): GameRoom {
+
+        let gameRoom: GameRoom | undefined = this.rooms.get(roomId)
+
+
+        if (!gameRoom) {
+
+            gameRoom = new GameRoom(roomId)
+
+            this.rooms.set(roomId, gameRoom)
+        }
+
+        return gameRoom
+    }
+
+
+    private static updateCurrentRoomId(roomId: string) {
+
+        this.roomId = roomId
     }
 
 
@@ -52,40 +74,35 @@ export class WebSocketIoServer {
 
             this.socket = socket
 
-            this.addPlayer(this.socket.id)
 
-            this.initRoom()
+            const gameRoom = this.getRoomById(WebSocketIoServer.roomId)
+
+            gameRoom.addPlayer(this.socket.id)
+
+
+            this.initRoom(WebSocketIoServer.roomId)
             this.setMessageHandler()
         })
     }
 
 
-    private addPlayer(id: string) {
 
-        const player = this.players.find(item => item.id == id)
+    private initRoom(roomId: string) {
 
+        this.socket && this.socket.join(roomId)
 
-        if (!player) {
-
-            this.players.push(new Player(id))
-        }
-    }
-
-
-    private initRoom() {
-
-        this.socket && this.socket.join(this.roomId)
-
-        console.log('this.roomId', this.roomId)
+        console.log('roomId', roomId)
 
 
         this.io.of('/').adapter.on('join-room', (room, id) => {
 
             console.log(`socket ${id} has joined room ${room}`)
 
-            this.addPlayer(id)
+            const gameRoom = this.getRoomById(room)
 
-            this.io.to(this.roomId).emit('playerJoinedTheRoom', { id, room, players: this.players, ignoreHost: this.ignoreHost, hostId: this.hostId })
+            gameRoom.addPlayer(id)
+
+            this.io.to(room).emit('playerJoinedTheRoom', { id, room, players: gameRoom.players, ignoreHost: gameRoom.ignoreHost, hostId: gameRoom.hostId })
         })
 
 
@@ -93,9 +110,11 @@ export class WebSocketIoServer {
 
             console.log(`socket ${id} has joined room ${room}`)
 
-            this.players = this.players.filter(item => item.id != id)
+            const gameRoom = this.getRoomById(room)
 
-            this.io.to(this.roomId).emit('playerLeftTheRoom', { id, room, players: this.players })
+            gameRoom.removePlayer(id)
+
+            this.io.to(room).emit('playerLeftTheRoom', { id, room, players: gameRoom.players })
         })
 
     }
@@ -105,8 +124,12 @@ export class WebSocketIoServer {
 
         if (!WebSocketIoServer.instance) {
 
-            WebSocketIoServer.instance = new WebSocketIoServer(serverOptions, roomId)
+            WebSocketIoServer.instance = new WebSocketIoServer(serverOptions)
+
         }
+
+        WebSocketIoServer.updateCurrentRoomId(roomId)
+
 
         return WebSocketIoServer.instance
     }
@@ -115,98 +138,72 @@ export class WebSocketIoServer {
 
     public setMessageHandler() {
 
-        this.socket && this.socket.on('createMessage', (message: Message) => {
 
-            this.io.to(this.roomId).emit('newIncomingMessage', message)
+        this.socket && this.socket.on('createMessage', (data: WithRoomId<{ message: Message }>) => {
+
+            const { message, roomId } = data
+
+            this.io.to(roomId).emit('newIncomingMessage', message)
         })
 
 
-        this.socket && this.socket.on('newMove', (move) => {
 
-            const { playerId, value } = move
+        this.socket && this.socket.on('newMove', (data: WithRoomId<{ move: Move }>) => {
 
-            let sum = 0
-            let amount = 0
-            let ready = false
-            let length = 0
+            const { move, roomId } = data
+            const gameRoom = this.getRoomById(roomId)
 
-            this.players = this.players.map(item => {
+            gameRoom.calculateAverage(move)
 
-                if (item.id == playerId) {
-
-                    item.move = value
-                }
-
-                const ignoreHostCondition: boolean = this.ignoreHost && (this.hostId == item.id)
-
-                if (!ignoreHostCondition) {
-
-                    sum += item.move || 0
-                    amount += item.move ? 1 : 0
-
-                    length++
-                }
-
-                return item
-            })
-
-            if (amount == length) {
-
-                ready = true
-            }
-
-            const average = sum / (length || 1)
+            const roomData: GameRoomBase = gameRoom.getGameRoomData()
 
 
-            this.io.to(this.roomId).emit('moveHadBeenMade', { average, players: this.players, ready })
+            this.io.to(roomId).emit('moveHadBeenMade', roomData)
         })
 
 
-        this.socket && this.socket.on('resultsVisibility', (value: boolean) => {
 
-            this.io.to(this.roomId).emit('gameResultsVisibility', value)
+        this.socket && this.socket.on('resultsVisibility', (data: WithRoomId<{ value: boolean }>) => {
+
+            const { value, roomId } = data
+
+            this.io.to(roomId).emit('gameResultsVisibility', value)
         })
 
 
-        this.socket && this.socket.on('setIgnoreHostFlag', (data) => {
 
-            const { value, id } = data
+        this.socket && this.socket.on('setIgnoreHostFlag', (data: WithRoomId<SetIgnoreHostFlagData>) => {
 
-            this.hostId = id
-            this.ignoreHost = value
+            const { value, id, roomId } = data
+            const gameRoom = this.getRoomById(roomId)
 
-            this.io.to(this.roomId).emit('updateIgnoreHostFlag', { hostId: id, ignoreHost: value })
+            gameRoom.setIgnoreHostFlag(data)
+
+            this.io.to(roomId).emit('updateIgnoreHostFlag', { hostId: id, ignoreHost: value })
         })
 
 
-        this.socket && this.socket.on('clearResults', () => {
 
-            this.players = this.players.map(item => {
+        this.socket && this.socket.on('clearResults', (data: WithRoomId) => {
 
-                item.move = 0
+            const { roomId } = data
+            const gameRoom = this.getRoomById(roomId)
 
-                return item
-            })
+            gameRoom.clearResults()
 
-            this.io.to(this.roomId).emit('gameResultsClear', { players: this.players })
+            this.io.to(roomId).emit('gameResultsClear', { players: gameRoom.players })
         })
 
 
-        this.socket && this.socket.on('setName', (data) => {
 
-            const { id, name } = data
+        this.socket && this.socket.on('setName', (data: WithRoomId<SetPlayerNameData>) => {
 
-            this.players = this.players.map(item => {
+            const { id, name, roomId } = data
+            const gameRoom = this.getRoomById(roomId)
 
-                if (item.id == id) {
+            gameRoom.setPlayerName(data)
 
-                    item.name = name
-                }
-
-                return item
-            })
-
-            this.io.to(this.roomId).emit('setPlayerName', { id, name, players: this.players })
+            this.io.to(roomId).emit('setPlayerName', { id, name, players: gameRoom.players })
         })
     }
 }
