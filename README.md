@@ -35,3 +35,12 @@ npm run start
 ```bash
 gcloud app deploy
 ```
+
+## The interface during voting
+
+![image](https://user-images.githubusercontent.com/19772523/228004777-bba7e48f-21da-4253-b25f-0187328119fd.png)
+
+
+## The interface when the voting is done and the host has revealed the results
+
+![image](https://user-images.githubusercontent.com/19772523/228003659-35be7301-94a5-4ba3-88f2-b160ebc50939.png)
