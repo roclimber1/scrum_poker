@@ -86,9 +86,9 @@ class GameRoom implements GameRoomBase {
                 item.move = value
             }
 
-            const ignoreHostCondition: boolean = this.ignoreHost && (this.hostId == item.id)
+            const condition: boolean = (this.ignoreHost && (this.hostId != item.id)) || !this.ignoreHost
 
-            if (!ignoreHostCondition) {
+            if (condition) {
 
                 sum += item.move || 0
                 amount += item.move ? 1 : 0
@@ -98,6 +98,7 @@ class GameRoom implements GameRoomBase {
 
             return item
         })
+
 
         if (amount == length) {
 
@@ -116,6 +117,17 @@ class GameRoom implements GameRoomBase {
 
             return item
         })
+
+        this.ready = false
+    }
+
+
+    public setHostId(id: string) {
+
+        if (!this.hostId && id) {
+
+            this.hostId = id
+        }
     }
 
 
@@ -123,8 +135,10 @@ class GameRoom implements GameRoomBase {
 
         const { value, id } = data
 
-        this.hostId = id
+
         this.ignoreHost = value
+
+        this.setHostId(id)
     }
 
 
