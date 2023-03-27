@@ -46,7 +46,7 @@ function RoomPage({ params }: any) {
     const { authorized, roomData, userRoom, user } = useSelector((state: RootState) => state.auth)
     const { currentPlayer, show, ignoreHost, hostId } = roomData || {}
 
-    const showOwnerPanel: boolean = (userRoom?.owner_id == user?.uid) && authorized
+    const showOwnerPanel: boolean = ((userRoom?.owner_id == user?.uid) && authorized)
     const showDeckBlock: boolean = !(ignoreHost && (hostId == currentPlayer?.id))
 
 

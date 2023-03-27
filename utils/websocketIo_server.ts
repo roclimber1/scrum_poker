@@ -99,6 +99,7 @@ export class WebSocketIoServer {
 
             gameRoom.addPlayer(id)
 
+
             this.io.to(room).emit('playerJoinedTheRoom', { id, room, players: gameRoom.players, ignoreHost: gameRoom.ignoreHost, hostId: gameRoom.hostId })
         })
 
