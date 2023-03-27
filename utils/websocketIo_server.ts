@@ -171,12 +171,12 @@ export class WebSocketIoServer {
 
         this.socket && this.socket.on('setIgnoreHostFlag', (data: WithRoomId<SetIgnoreHostFlagData>) => {
 
-            const { value, id, roomId } = data
+            const { roomId } = data
             const gameRoom = this.getRoomById(roomId)
 
             gameRoom.setIgnoreHostFlag(data)
 
-            this.io.to(roomId).emit('updateIgnoreHostFlag', { hostId: id, ignoreHost: value })
+            this.io.to(roomId).emit('updateIgnoreHostFlag', { hostId: gameRoom.hostId, ignoreHost: gameRoom.ignoreHost })
         })
 
 

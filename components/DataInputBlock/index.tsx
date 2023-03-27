@@ -1,14 +1,14 @@
 
-import { forwardRef } from 'react'
+import { forwardRef, useEffect } from 'react'
 
 
-import type { MouseEventHandler, Ref } from 'react'
+import type { Ref } from 'react'
 
 
 
 interface DataInputBlockProps {
     buttonTitle: string,
-    handleButtonClick: MouseEventHandler<HTMLButtonElement>,
+    handleButtonClick: () => void,
     header: string,
     title: string
 }
@@ -19,6 +19,30 @@ interface DataInputBlockProps {
 function DataInputBlock(props: DataInputBlockProps, ref: Ref<HTMLInputElement>) {
 
     const { buttonTitle, header, title, handleButtonClick } = props
+
+
+    const handleKeyPress = (event: KeyboardEvent) => {
+
+        if (event.key == 'Enter') {
+
+            handleButtonClick()
+        }
+    }
+
+
+    useEffect(() => {
+
+        if (ref) {
+
+            ref?.current?.addEventListener('keypress', handleKeyPress)
+        }
+
+        return () => {
+
+            ref?.current?.removeEventListener('keypress', handleKeyPress)
+        }
+
+    }, [])
 
 
     return (<>
