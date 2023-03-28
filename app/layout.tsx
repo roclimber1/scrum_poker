@@ -1,6 +1,6 @@
 
 import './globals.css'
-import { Montserrat } from '@next/font/google'
+import { Montserrat } from 'next/font/google'
 
 
 import Provider from '@/redux/provider'
@@ -21,6 +21,13 @@ const montserrat = Montserrat({
 
 interface RootLayoutProps {
     children: ReactNode
+}
+
+
+
+export const metadata = {
+    title: 'Scrum Pokerooom',
+    description: 'This is the amazing Scrum Pokerooom'
 }
 
 

@@ -77,6 +77,15 @@ export class WebSocketIoServer {
             gameRoom.addPlayer(this.socket.id)
 
 
+            if (!gameRoom.hostId) {
+
+                if (gameRoom.players.length == 1) {
+
+                    gameRoom.setHostId(this.socket.id)
+                }
+            }
+
+
             this.initRoom(WebSocketIoServer.roomId)
             this.setMessageHandler()
         })
@@ -93,7 +102,7 @@ export class WebSocketIoServer {
 
         this.io.of('/').adapter.on('join-room', (room, id) => {
 
-            console.log(`socket ${id} has joined room ${room}`)
+            console.log(`socket ${id} has joined the room ${room}`)
 
             const gameRoom = this.getRoomById(room)
 
@@ -106,7 +115,7 @@ export class WebSocketIoServer {
 
         this.io.of('/').adapter.on('leave-room', (room, id) => {
 
-            console.log(`socket ${id} has joined room ${room}`)
+            console.log(`socket ${id} has left the room ${room}`)
 
             const gameRoom = this.getRoomById(room)
 

@@ -1,7 +1,7 @@
 
 import Loader from '@/components/Loader'
 
-import { Montserrat } from '@next/font/google'
+import { Montserrat } from 'next/font/google'
 
 
 

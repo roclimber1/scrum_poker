@@ -8,6 +8,11 @@ import CopyRoomIdButton from './CopyRoomIdButton'
 
 
 
+import usePoofOfConfetti from '@/hooks/usePoofOfConfetti'
+
+
+
+
 import type { BaseProps } from '@/utils/websocketIo_client'
 import type { RootState } from '@/redux/store'
 
@@ -30,6 +35,8 @@ function RoomOwnerBlock(props: RoomOwnerBlockProps) {
     const { show: showResults = false, ready, ignoreHost } = roomData || {}
 
 
+
+    usePoofOfConfetti({ trigger: showResults })
 
 
 
