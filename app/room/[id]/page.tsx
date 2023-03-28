@@ -6,7 +6,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 
 
-import { useEffect } from 'react'
 
 import { Message, WebSocketIoClient } from '@/utils/websocketIo_client'
 
@@ -28,8 +27,10 @@ import { setRoomData } from '@/redux/features/auth'
 
 
 
+
 import type { RootState } from '@/redux/store'
 import type { PlayerBase } from '@/utils/interfaces'
+import usePoofOfConfetti from '@/hooks/usePoofOfConfetti'
 
 
 
@@ -46,8 +47,12 @@ function RoomPage({ params }: any) {
     const { authorized, roomData, userRoom, user } = useSelector((state: RootState) => state.auth)
     const { currentPlayer, show, ignoreHost, hostId } = roomData || {}
 
-    const showOwnerPanel: boolean = ((userRoom?.owner_id == user?.uid) && authorized)
+    const showOwnerPanel: boolean = ((userRoom?.owner_id == user?.uid) && authorized) || (hostId == currentPlayer?.id)
     const showDeckBlock: boolean = !(ignoreHost && (hostId == currentPlayer?.id))
+
+
+
+    usePoofOfConfetti({ trigger: (showOwnerPanel || Boolean(show)) })
 
 
 
@@ -80,13 +85,6 @@ function RoomPage({ params }: any) {
     })
 
 
-
-
-    useEffect(() => {
-
-        console.debug(' >> roomData', roomData)
-
-    }, [roomData])
 
 
 
@@ -129,3 +127,27 @@ function RoomPage({ params }: any) {
 
 
 export default RoomPage
+
+
+
+
+
+const lines: Array<string> = [
+    '                                                                                            ',
+    ' .@@@@@@@@@#     .@@@@@@@@@    @@@@@@@@@@@      @@@@     #@@@,   @@@@@      %@@@@           ',
+    '(@@@@     (@@   @@@@@(   *@@,  @@@@    %@@@@    @@@@     #@@@,   @@@@@@    @@@@@@           ',
+    '%@@@@@@(       @@@@(           @@@@    .@@@@    @@@@     #@@@,   @@@@@@@, @@@@@@@           ',
+    '  %@@@@@@@@@@  @@@@            @@@@@@@@@@&      @@@@     #@@@,   @@@@ @@@@@@ @@@@           ',
+    '#        @@@@  ,@@@@       .,  @@@@   @@@@&     @@@@     &@@@.   @@@@  @@@@  @@@@           ',
+    '@@@@@@@@@@@@.    @@@@@@@@@@@,  @@@@     @@@@&    @@@@@@@@@@@*    @@@@        @@@@           ',
+    '                                                                                            ',
+    '  @@@@@&,             @@,                                                                   ',
+    '  @@%  /@@,   @@@@    @@,  @@@   %@@@    @@* &&   @@@%     /@@@,   (@@ @@@  &@@             ',
+    '  @@@@@@@@  @@.  @@@  @@,@@@   @@,   @@  @@*   ,@@   @@@ &@@   @@# (@@  /@@   @@            ',
+    '  @@%       @@.  @@@  @@*,@@,  @@#       @@*   ,@@   @@@ &@@   @@( (@@  ,@@   @@            ',
+    '  &&#         @@@&    &&,  &&&   (@@@&   &&*      @@@#     /@@@,   /&&  .&&   &&            ',
+    '                                                                                            '
+]
+
+
+lines.forEach(line => console.log(line))

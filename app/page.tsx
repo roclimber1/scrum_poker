@@ -3,7 +3,7 @@
 
 import Link from 'next/link'
 
-import { Montserrat } from '@next/font/google'
+import { Montserrat } from 'next/font/google'
 
 
 const montserrat = Montserrat({

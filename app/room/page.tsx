@@ -10,7 +10,7 @@ import { Rooms } from '@/utils/rooms'
 
 
 
-import { MouseEventHandler, useRef } from 'react'
+import { useRef } from 'react'
 
 
 
@@ -22,7 +22,7 @@ export default function Room() {
     const router = useRouter()
 
 
-    const handleButtonClick: MouseEventHandler<HTMLButtonElement> = () => {
+    const handleButtonClick = (): void => {
 
         console.debug('Room -> handleButtonClick')
 
