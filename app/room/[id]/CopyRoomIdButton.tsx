@@ -43,16 +43,19 @@ function CopyRoomIdButton(props: CopyRoomIdButtonProps) {
 
 
     return (
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center flex-col">
 
-            <span className="m-2 p-2">{id}</span>
+            <div className="flex justify-center items-center">
 
-            <button
-                title="Copy to clipboard"
-                onClick={handleCopyRoomId}
-                className="m-2 p-2 rounded-sm bg-slate-800 hover:bg-slate-400"
-            >💾</button>
+                <span className="m-2 p-2">{id}</span>
 
+                <button
+                    title="Copy to clipboard"
+                    onClick={handleCopyRoomId}
+                    className="m-2 p-2 rounded-sm dark:bg-slate-800 dark:hover:bg-slate-400 bg-slate-400 hover:bg-slate-600"
+                >💾</button>
+
+            </div>
 
             {showHelperText ? (<div className="text-gray-500">Room id had been successfully copied!</div>) : null}
         </div>

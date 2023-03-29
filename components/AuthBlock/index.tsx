@@ -119,7 +119,7 @@ function AuthBlock() {
     return (
         <div className="flex flex-row items-center">
 
-            {user && <h2 className="m-2 p-2">Hi there, <span className="text-yellow-600">{user?.displayName}</span>!</h2>}
+            {user && <h2 className="sm:m-2 sm:p-2 m-1 p-1">Hi there, <span className="text-yellow-600">{user?.displayName}</span>!</h2>}
 
             {!!error && <h2>{`Something went wrong: ${error}`}</h2>}
 
@@ -129,10 +129,10 @@ function AuthBlock() {
 
             {!loading && <>
 
-                {!authorized && <button onClick={handleSignInClick} className="bg-sky-500 hover:bg-sky-700 rounded-md text-base p-3 my-3">Sigh In with Google 🚀</button>}
+                {!authorized && <button onClick={handleSignInClick} className="bg-sky-500 hover:bg-sky-700 rounded-md sm:text-base text-sm sm:p-3 sm:my-3 p-2 my-1">Sigh In with Google 🚀</button>}
 
 
-                {authorized && <button onClick={handleSignOutClick} className="bg-green-900 hover:bg-green-700 rounded-md text-base p-3 my-3">Sigh Out 🦖</button>}
+                {authorized && <button onClick={handleSignOutClick} className="bg-green-900 hover:bg-green-700 rounded-md sm:text-base text-sm sm:p-3 sm:my-3 p-2 my-1">Sigh Out 🦖</button>}
             </>}
         </div>
     )

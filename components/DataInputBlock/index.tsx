@@ -55,13 +55,13 @@ function DataInputBlock(props: DataInputBlockProps, ref: Ref<HTMLInputElement>) 
         <div className="flex flex-row gap-3">
 
             <input
-                className="bg-sky-900 hover:bg-sky-700 rounded-md text-base p-3 my-3"
+                className="dark:bg-sky-900 dark:hover:bg-sky-700 bg-amber-100 rounded-md text-base p-3 my-3"
                 type="text"
                 ref={ref}
             />
 
             <button
-                className="bg-orange-600 hover:bg-orange-400 rounded-md text-base p-3 my-3"
+                className="dark:bg-orange-600 dark:hover:bg-orange-400 bg-orange-400 hover:bg-orange-600 rounded-md text-base p-3 my-3"
                 onClick={handleButtonClick}
             >
                 {buttonTitle}

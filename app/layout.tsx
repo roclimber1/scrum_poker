@@ -45,13 +45,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     <nav className="flex flex-row justify-center items-center">
 
 
-                        <ul className="flex-row flex p-2 m-2 gap-3">
+                        <ul className="flex-row flex sm:p-2 sm:m-2 sm:gap-3 p-1 m-1 gap-2">
 
-                            <li className="hover:text-slate-400">
+                            <li className="dark:hover:text-slate-400 hover:text-slate-600">
                                 <a href="/">Home</a>
                             </li>
 
-                            <li className="hover:text-slate-400">
+                            <li className="dark:hover:text-slate-400 hover:text-slate-600">
                                 <a href="/room">Room</a>
                             </li>
                         </ul>

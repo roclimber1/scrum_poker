@@ -30,10 +30,10 @@ function Player(props: PlayerProps) {
 
 
     return (
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center whitespace-normal">
 
             <div
-                className={`${itsMeCondition ? 'w-20 h-20' : 'w-16 h-16'} rounded-full bg-green-700 flex justify-center items-center m-2 p-2 bg-cover`}
+                className={`${itsMeCondition ? 'sm:w-20 sm:h-20 w-10 h-10' : 'sm:w-16 sm:h-16 w-8 h-8'} rounded-full bg-green-700 flex justify-center items-center sm:m-2 sm:p-2 m-1 p-1 bg-cover`}
                 style={{
                     backgroundImage: `url(https://api.dicebear.com/5.x/thumbs/svg?seed=${name})`
                 }}
@@ -41,18 +41,18 @@ function Player(props: PlayerProps) {
                 {/*  */}
             </div>
 
-            <div className="m-2 p-2 text-xs">
+            <div className="sm:m-2 sm:p-2 m-1 p-1 text-xs">
                 {name || id} {itsMeCondition ? '(you)' : ''}
             </div>
 
 
-            {ignoreHostCondition && <div className="rounded-lg bg-stone-800 w-12 h-16 flex justify-center items-center">
+            {ignoreHostCondition && <div className="rounded-lg bg-stone-800 sm:w-12 sm:h-16 w-10 h-14 flex justify-center items-center">
 
                 <>👑</>
             </div>}
 
 
-            {!ignoreHostCondition ? <div className="rounded-lg bg-orange-500 w-12 h-16 flex justify-center items-center">
+            {!ignoreHostCondition ? <div className="rounded-lg bg-orange-500 sm:w-12 sm:h-16 w-10 h-14 flex justify-center items-center">
 
                 {show ? <>{move}</> : <>{(move) ? '🖤' : ''}</>}
             </div> : null}

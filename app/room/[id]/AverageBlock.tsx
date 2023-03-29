@@ -18,9 +18,9 @@ function AverageBlock() {
 
 
     return (
-        <div className="flex flex-col rounded-lg bg-lime-700 justify-center items-center m-3 p-3">
+        <div className="flex flex-col rounded-lg dark:bg-lime-700 bg-lime-600 justify-center items-center sm:m-3 sm:p-3 m-1 p-1">
 
-            <div>Average:</div>
+            <div className="sm:text-base text-sm">Average:</div>
             {show ? <div>{average?.toFixed(1)}</div> : <div>👀</div>}
         </div>
     )
