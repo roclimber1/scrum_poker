@@ -33,7 +33,7 @@ function DeckBlock(props: BaseProps) {
         <>
             {DEFAULT_DECK.map(card => (<button
                 key={`card-${uuidv4()}`}
-                className={`rounded-lg w-12 h-16 p-3 m-3 ${(move == card) ? 'bg-amber-800' : 'bg-amber-400 hover:bg-amber-700'}`}
+                className={`rounded-lg sm:w-12 sm:h-16 w-10 h-14 sm:m-3 sm:p-3 m-1 p-1 ${(move == card) ? 'bg-amber-800' : 'bg-amber-400 hover:bg-amber-700'}`}
                 onClick={handleCardClick(card)}
             >
                 {card}

@@ -62,11 +62,11 @@ function RoomOwnerBlock(props: RoomOwnerBlockProps) {
 
             <CopyRoomIdButton id={id} />
 
-            <div className="flex flex-row">
+            <div className="flex flex-row justify-between">
 
-                <div className="p-3">
+                <div className="sm:p-3 p-1">
                     <button
-                        className={`${ready ? '' : 'pointer-events-none'} bg-orange-600 hover:bg-orange-400 rounded-md text-base p-3`}
+                        className={`${ready ? '' : 'pointer-events-none'} dark:bg-orange-600 dark:hover:bg-orange-400 bg-orange-400 hover:bg-orange-600 rounded-md sm:text-base text-sm sm:p-3 p-2`}
                         onClick={handleShowResults}
                     >
                         {showResults ? 'Hide results' : 'Show results'}
@@ -74,9 +74,9 @@ function RoomOwnerBlock(props: RoomOwnerBlockProps) {
                 </div>
 
 
-                <div className="p-3">
+                <div className="sm:p-3 p-1">
                     <button
-                        className={`${showResults ? '' : 'pointer-events-none'} bg-slate-900 hover:bg-slate-800 rounded-md text-base p-3`}
+                        className={`${showResults ? '' : 'pointer-events-none'} dark:bg-slate-900 dark:hover:bg-slate-800 bg-slate-500 hover:bg-slate-600 rounded-md sm:text-base text-sm sm:p-3 p-2`}
                         onClick={handleClearResults}
                     >
                         {'Clear results'}
@@ -84,21 +84,25 @@ function RoomOwnerBlock(props: RoomOwnerBlockProps) {
                 </div>
 
 
-                {ready ? <div className="p-3">
-                    <div className="p-3">
-                        {'Voting has done'}
-                    </div>
-                </div> : null}
-
-
-                <div className="p-3">
+                <div className="sm:p-3 p-1">
                     <button
-                        className="bg-lime-800 hover:bg-lime-700 rounded-md text-base p-3"
+                        className="dark:bg-lime-800 dark:hover:bg-lime-700 bg-lime-600 hover:bg-lime-700 rounded-md sm:text-base text-sm sm:p-3 p-2"
                         onClick={handleIgnoreFlag}
                     >
                         {'Ignore host'} {ignoreHost ? '💤' : '🖖'}
                     </button>
                 </div>
+
+            </div>
+
+
+            <div className="flex flex-row justify-center items-center">
+
+                {ready ? <div className="sm:p-3 p-1">
+                    <div className="sm:p-3 p-2 dark:text-slate-300 text-green-900 font-bold">
+                        {'Voting has done'}
+                    </div>
+                </div> : null}
 
             </div>
 
