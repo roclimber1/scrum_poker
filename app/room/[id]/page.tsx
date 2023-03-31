@@ -52,7 +52,7 @@ function RoomPage({ params }: any) {
 
 
 
-    usePoofOfConfetti({ trigger: (showOwnerPanel || Boolean(show)) })
+    usePoofOfConfetti({ trigger: (Boolean(currentPlayer?.name) || Boolean(show)) })
 
 
 

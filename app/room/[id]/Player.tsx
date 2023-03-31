@@ -14,6 +14,8 @@ interface PlayerProps {
     show: boolean
 }
 
+const SMILES_LIST: Array<string> = ['👻','🐺','🐱','🦁','🐯','🦒','🦊','🦝','🐭','🐹','🐰','🐻','🐻‍❄️','🐨','🐼','🐸','🦄','🐲','🦥','🦘','🦙','🐫','🐐','🐪','🦨','🐘','🦣','🐁','🐀','🦔','🐿️','🐇','🦫','🦎','🐊','🐢','🐍','🐉','🦕','🦖','🦦','🦈','🐬','🦭','🐳','🐋','🐟','🐠','🐡','🦐','🦑','🐙','🦞','🦀','🦆','🐓','🦃','🦅','🦜','🦩','🦚','🦉','🦤','🐦','🐧','🐥','🦇','🦋','🐌','🐛','🦟','🪰','🪱','🦗','🐜','🪳','🐝','🪲','🐞','🦂','🕷️','🦠','🎃','🧸','🪅','🗿','☃️','⛄','👾']
+
 
 function Player(props: PlayerProps) {
 
@@ -29,6 +31,17 @@ function Player(props: PlayerProps) {
     const itsMeCondition: boolean = (id == currentPlayer?.id)
 
 
+
+    const getRandomEmoji = (): string => {
+
+        const smilesAmount: number = SMILES_LIST.length
+        const randomIndex: number = Math.floor(Math.random() * smilesAmount)
+
+        return SMILES_LIST[randomIndex]
+    }
+
+
+
     return (
         <div className="flex flex-col justify-center items-center whitespace-normal">
 
@@ -42,7 +55,7 @@ function Player(props: PlayerProps) {
             </div>
 
             <div className="sm:m-2 sm:p-2 m-1 p-1 text-xs">
-                {name || id} {itsMeCondition ? '(you)' : ''}
+                {name || getRandomEmoji()} {itsMeCondition ? '(you)' : ''}
             </div>
 
 
