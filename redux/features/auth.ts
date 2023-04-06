@@ -26,7 +26,7 @@ const initialState: AuthState = {
     userRoom: null
 }
 
-export const counterSlice = createSlice({
+export const authSlice = createSlice({
 
     name: 'auth',
     initialState,
@@ -55,6 +55,6 @@ export const counterSlice = createSlice({
 })
 
 
-export const { setAuthorized, setUser, setRoomData, setUserRoom } = counterSlice.actions
+export const { setAuthorized, setUser, setRoomData, setUserRoom } = authSlice.actions
 
-export default counterSlice
+export default authSlice
