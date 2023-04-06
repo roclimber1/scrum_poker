@@ -27,7 +27,18 @@ interface RootLayoutProps {
 
 export const metadata = {
     title: 'Scrum Pokerooom',
-    description: 'This is the amazing Scrum Pokerooom'
+    description: 'This is the amazing Scrum Pokerooom',
+    icons: {
+        icon: [
+            { url: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' },
+            { url: '/favicon.png', type: 'image/png' }
+        ],
+        shortcut: ['/favicon.png'],
+        apple: [
+            { url: '/favicon.png', type: 'image/png' },
+            { url: '/favicon.png', sizes: '192x192', type: 'image/png' }
+        ]
+    }
 }
 
 

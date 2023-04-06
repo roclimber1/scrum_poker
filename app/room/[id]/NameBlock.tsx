@@ -60,6 +60,9 @@ function NameBlock(props: BaseProps) {
                 header={''}
                 ref={inputRef}
                 title={'Set your name:'}
+                inputProps={{
+                    defaultValue: user?.displayName ?? ''
+                }}
             />) : null}
         </>
     )

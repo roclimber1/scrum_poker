@@ -2,7 +2,7 @@
 import { forwardRef, useEffect } from 'react'
 
 
-import type { Ref } from 'react'
+import type { Ref, DetailedHTMLProps, InputHTMLAttributes } from 'react'
 
 
 
@@ -10,6 +10,7 @@ interface DataInputBlockProps {
     buttonTitle: string,
     handleButtonClick: () => void,
     header: string,
+    inputProps?: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
     title: string
 }
 
@@ -18,7 +19,7 @@ interface DataInputBlockProps {
 
 function DataInputBlock(props: DataInputBlockProps, ref: Ref<HTMLInputElement>) {
 
-    const { buttonTitle, header, title, handleButtonClick } = props
+    const { buttonTitle, header, title, handleButtonClick, inputProps = {}} = props
 
 
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -55,6 +56,7 @@ function DataInputBlock(props: DataInputBlockProps, ref: Ref<HTMLInputElement>) 
         <div className="flex flex-row gap-3">
 
             <input
+                {...inputProps}
                 className="dark:bg-sky-900 dark:hover:bg-sky-700 bg-amber-100 rounded-md text-base p-3 my-3"
                 type="text"
                 ref={ref}

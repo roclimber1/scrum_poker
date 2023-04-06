@@ -12,6 +12,9 @@ const montserrat = Montserrat({
 })
 
 
+const SHOW_CREATE_BUTTON = false
+
+
 
 export default function Home() {
 
@@ -21,17 +24,17 @@ export default function Home() {
 
             <h1>This is Scrum Poker application 🔥</h1>
 
-            <Link href={'/auth'}>
+            {SHOW_CREATE_BUTTON ? (<Link href={'/auth'}>
 
                 <button className="dark:bg-sky-900 dark:hover:bg-sky-700 bg-sky-600 hover:bg-sky-800 rounded-md text-base p-3 my-3">
                     {'Let\'s create your poker room 🤍'}
                 </button>
-            </Link>
+            </Link>) : null}
 
             <Link href={'/room'}>
 
                 <button className="rounded-md text-base p-3 my-3 dark:bg-orange-600 dark:hover:bg-orange-400 bg-orange-300 hover:bg-orange-600">
-                    Or join to existing room 🐚
+                    {'Let\'s join to existing room 🐚'}
                 </button>
             </Link>
         </main>
