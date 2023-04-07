@@ -14,6 +14,7 @@ export interface PlayerBase {
 
 export interface GameRoomBase {
     average: number,
+    coherence: number,
     hostId: string,
     id: string,
     ignoreHost: boolean,

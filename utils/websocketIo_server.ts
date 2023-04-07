@@ -161,6 +161,7 @@ export class WebSocketIoServer {
             const gameRoom = this.getRoomById(roomId)
 
             gameRoom.calculateAverage(move)
+            gameRoom.calculateCoherence()
 
             const roomData: GameRoomBase = gameRoom.getGameRoomData()
 
