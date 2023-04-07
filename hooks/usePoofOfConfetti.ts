@@ -7,13 +7,14 @@ import confetti from 'canvas-confetti'
 
 
 
-interface UsePoofOfConfettiParameters {
-    trigger: boolean
-}
+import type { UseConfettiParameters } from './interfaces'
 
 
 
-function usePoofOfConfetti(parameters: UsePoofOfConfettiParameters): void {
+
+
+
+function usePoofOfConfetti(parameters: UseConfettiParameters): void {
 
     const { trigger } = parameters
 

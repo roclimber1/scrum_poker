@@ -25,6 +25,7 @@ import { setRoomData } from '@/redux/features/auth'
 
 
 import usePoofOfConfetti from '@/hooks/usePoofOfConfetti'
+import useConfettiExplosion from '@/hooks/useConfettiExplosion'
 
 
 
@@ -46,7 +47,7 @@ const SHOW_CHAT = false
 function RoomPage({ params }: any) {
 
     const { authorized, roomData, userRoom, user } = useSelector((state: RootState) => state.auth)
-    const { currentPlayer, show, ignoreHost, hostId } = roomData || {}
+    const { currentPlayer, show, ignoreHost, hostId, coherence } = roomData || {}
 
     const showOwnerPanel: boolean = ((userRoom?.owner_id == user?.uid) && authorized) || (hostId == currentPlayer?.id)
     const showDeckBlock: boolean = !(ignoreHost && (hostId == currentPlayer?.id))
@@ -54,6 +55,8 @@ function RoomPage({ params }: any) {
 
 
     usePoofOfConfetti({ trigger: (Boolean(currentPlayer?.name) || Boolean(show)) })
+
+    useConfettiExplosion({ trigger: Boolean(coherence) && Boolean(show) })
 
 
 

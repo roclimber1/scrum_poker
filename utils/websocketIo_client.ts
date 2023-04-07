@@ -9,7 +9,7 @@ import GameRoom, { Player } from './game_room'
 
 
 import type { Socket } from 'socket.io-client'
-import type { Move } from './interfaces'
+import type { GameRoomBase, Move } from './interfaces'
 
 import type { PlayerBase } from '@/utils/interfaces'
 
@@ -38,17 +38,11 @@ interface Options {
 }
 
 
-export type RoomData = {
-    average: number,
+export type RoomData = GameRoomBase & {
     currentPlayer: PlayerBase | null,
     gameRoom: GameRoom | null,
-    hostId: string,
-    id: string,
-    ignoreHost: boolean,
     messages: Array<Message>,
-    players: Array<PlayerBase>,
-    ready: boolean,
-    show: boolean,
+    show: boolean
 }
 
 
@@ -59,6 +53,7 @@ export class WebSocketIoClient {
 
     public roomData: RoomData = {
         average: 0,
+        coherence: 0,
         currentPlayer: null,
         gameRoom: null,
         hostId: '',
@@ -145,12 +140,14 @@ export class WebSocketIoClient {
 
         this.socket && this.socket.on('moveHadBeenMade', (data) => {
 
-            const { average, players, ready } = data
+            const { average, players, ready, coherence } = data
 
             this.roomData.players = players
             this.roomData.average = average
 
             this.roomData.ready = ready
+            this.roomData.coherence = coherence
+
 
             callback && callback(this.roomData)
         })
@@ -193,6 +190,7 @@ export class WebSocketIoClient {
 
             this.roomData.players = players
             this.roomData.average = 0
+            this.roomData.coherence = 0
 
             this.roomData.ready = false
             this.roomData.show = false

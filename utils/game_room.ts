@@ -42,6 +42,9 @@ class GameRoom implements GameRoomBase {
     public average: number = 0
 
 
+    public coherence: number = 0
+
+
 
     constructor(
         id: string
@@ -63,6 +66,37 @@ class GameRoom implements GameRoomBase {
         }
     }
 
+
+    public calculateCoherence() {
+
+        let previous = 0
+        let index = 0
+
+        let condition = true
+
+
+        this.coherence = 1
+
+
+        for (const player of this.players) {
+
+            if (index > 0) {
+
+                condition = (previous == player.move)
+            }
+
+            if (!condition) {
+
+                this.coherence = 0
+
+                break
+            }
+
+            previous = player.move || 0
+            index++
+        }
+
+    }
 
 
     public removePlayer(id: string) {
@@ -119,6 +153,9 @@ class GameRoom implements GameRoomBase {
         })
 
         this.ready = false
+
+        this.average = 0
+        this.coherence = 0
     }
 
 
@@ -163,6 +200,7 @@ class GameRoom implements GameRoomBase {
 
         return {
             average: this.average,
+            coherence: this.coherence,
             hostId: this.hostId,
             id: this.id,
             ignoreHost: this.ignoreHost,
