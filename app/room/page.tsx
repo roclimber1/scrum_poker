@@ -24,7 +24,6 @@ export default function Room() {
 
     const handleButtonClick = (): void => {
 
-        console.debug('Room -> handleButtonClick')
 
         const { value } = inputRef?.current || {}
 
