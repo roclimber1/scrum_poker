@@ -84,19 +84,13 @@ export class WebSocketIoClient {
 
 
         await fetch(`/api/socket/${roomId}`)
-            .then((data) => console.debug('OK > fetch(/api/socket)', data))
-            .catch((data) => console.debug('ERROR > fetch(/api/socket)', data))
 
         this.socket = io()
 
 
-        console.debug('socket', this.socket)
-
 
 
         this.socket.on('connect', () => {
-
-            console.debug('>> connected')
 
             this.roomId = roomId
 

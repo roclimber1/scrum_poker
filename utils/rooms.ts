@@ -106,8 +106,6 @@ export class Rooms extends Documents {
 
         if (!defaultDeck || !userId) {
 
-            console.error('Either default deck hadn\'t been found: ', defaultDeck, 'or user id wasn\'t set', userId)
-
             return null
         }
 

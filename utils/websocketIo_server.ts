@@ -97,12 +97,10 @@ export class WebSocketIoServer {
 
         this.socket && this.socket.join(roomId)
 
-        console.log('roomId', roomId)
 
 
-        this.io.of('/').adapter.on('join-room', (room, id) => {
+        this.io.of('/').adapter.on('join-room', (room: string, id: string) => {
 
-            console.log(`socket ${id} has joined the room ${room}`)
 
             const gameRoom = this.getRoomById(room)
 
@@ -113,9 +111,8 @@ export class WebSocketIoServer {
         })
 
 
-        this.io.of('/').adapter.on('leave-room', (room, id) => {
+        this.io.of('/').adapter.on('leave-room', (room: string, id: string) => {
 
-            console.log(`socket ${id} has left the room ${room}`)
 
             const gameRoom = this.getRoomById(room)
 

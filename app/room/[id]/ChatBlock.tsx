@@ -1,13 +1,7 @@
 
 import { useRef } from 'react'
-// import { useSelector } from 'react-redux'
 
 import DataInputBlock from '@/components/DataInputBlock'
-
-
-
-// import type { BaseProps, Message } from '@/utils/WebSocketIoClient'
-// import type { RootState } from '@/redux/store'
 
 
 
@@ -16,20 +10,12 @@ import DataInputBlock from '@/components/DataInputBlock'
 
 function ChatBlock() {
 
-    // const { socketInstance } = props
-    // const { roomData } = useSelector((state: RootState) => state.auth)
-
-
 
     const inputRef = useRef<HTMLInputElement>(null)
-
-    // const [messages, setMessages] = useState<Array<Message>>([])
-
 
 
     const handleButtonClick = () => {
 
-        console.debug('Message -> handleButtonClick')
 
         const { value } = inputRef?.current || {}
 
